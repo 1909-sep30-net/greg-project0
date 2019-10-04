@@ -9,15 +9,15 @@ namespace Domains.Library
      * Id is currently a private property only accessed in the Customer constructor
      * Any adjustment to ID must be made in constructor as it affects static nextID field
      */
-    class Customer
+    public class Customer
     {
         //static fields
-        static int nextID = 0;
+        private static int nextID = 0;
 
         //fields
         private string firstName;
         private string lastName;
-        private int id;
+        private int custID;
 
         //Properties
         public string FirstName
@@ -38,13 +38,12 @@ namespace Domains.Library
             get { return firstName + " " + lastName; }
         }
 
-        //in future, implement a local database that checks ids in use and set id
-        //based on data already in db
-        private int Id
+        public int CustID
         {
-            get { return id; }
-            set { id = value; }
+            get { return custID; }
         }
+
+        
 
         //Constructor auto-sets Id based on static nextID
         //Will need to be editted with ID assignment is implemented
@@ -52,7 +51,7 @@ namespace Domains.Library
         {
             FirstName = firstName;
             LastName = lastName;
-            Id = Customer.nextID;
+            custID = Customer.nextID;
             Customer.nextID++;
         }
 

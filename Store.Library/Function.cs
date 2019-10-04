@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Domains.Library;
 
 namespace Store.Library
 {
-    class Function
+    public class Function
     {
+        
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Domains.Library
 {
-    class Store
+    public class Store
     {
     }
 }

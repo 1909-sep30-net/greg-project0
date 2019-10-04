@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Domains.Library
 {
-    class Order
+    public class Order
     {
     }
 }
