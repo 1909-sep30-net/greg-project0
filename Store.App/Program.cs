@@ -1,6 +1,7 @@
 ﻿using System;
 using Domains.Library;
 using Store.Library;
+using Serilog;
 
 namespace Store.App
 {
