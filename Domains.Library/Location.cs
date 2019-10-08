@@ -57,13 +57,7 @@ namespace Domains.Library
 
         }
 
-        //add new item
-
-        //replenish inventory method
-
-        //sell single item
-        //sell multiple of item
-
+        
         //adds a new product to inventory
         public void AddNewItem(Product newItem)
         {
