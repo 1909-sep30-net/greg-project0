@@ -12,6 +12,8 @@ namespace Store.App
         {
             string storeName = "Walmart";
             string address = "123 Main St";
+            string custFirst = "Greg";
+            string custLast = "Favrot";
 
             //base products
             Product taco = new Product("taco", "mexican food item");
@@ -19,39 +21,21 @@ namespace Store.App
             Product coke = new Product("coke", "tasty drink");
             Product pepsi = new Product("pepsi", "nasty drink");
 
+            var store = new Location(storeName, address);
+                                    
+            store.AddNewItem(taco, 14);
+            store.AddNewItem(burger, 0);
+            store.AddNewItem(coke, 100);
 
-            var store1 = new Location(storeName, address);
-            //var store2 = new Location(storeName, "456 South St");
-            
-            Console.WriteLine(store1.StoreName);
-            Console.WriteLine(store1.Address);
-            Console.WriteLine(store1.StoreID);
-            Console.WriteLine();
-            /*
-            Console.WriteLine(store2.StoreName);
-            Console.WriteLine(store2.Address);
-            Console.WriteLine(store2.StoreID);
-            Console.WriteLine();
-            */
-            store1.AddNewItem(taco, 14);
-            store1.AddNewItem(burger, 0);
-            store1.AddNewItem(coke, 100);
-            /*
-            store2.AddNewItem(taco, 10);
-            store2.AddNewItem(burger, 20);
-            store2.AddNewItem(pepsi, 100);
-            */
-            Console.WriteLine(store1.InventoryToString());
-            //Console.WriteLine(store2.InventoryToString());
+            var greg = new Customer(custFirst, custLast);
 
-            store1.AdjustQuantity(coke, 4);
-            //store2.AdjustQuantity(coke, 4);
+            var order = new Order(greg, store);
 
-            Console.WriteLine(store1.InventoryToString());
-            //Console.WriteLine(store2.InventoryToString());
+            order.AddItemToBasket(taco, 17);
 
+            order.ReturnProduct(taco);
 
-
+            Console.WriteLine(order.ToString());
 
         }
     }

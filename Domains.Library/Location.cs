@@ -110,12 +110,10 @@ namespace Domains.Library
         //returns true if successful
         public bool AdjustQuantity(Product product, int quantity)
         {
-            bool exists = false;
             foreach (KeyValuePair<Product, int> item in inventory)
             {
                 if (item.Key == product)
                 {
-                    exists = true;
                     if(item.Value + quantity >= 0)
                     {
                         inventory[product] = item.Value + quantity;
@@ -123,7 +121,7 @@ namespace Domains.Library
                     }
                     else
                     {
-                        Console.WriteLine($"Product found, but only {item.Value} in stock. You requested {quantity}. Please try again.");
+                        Console.WriteLine($"Product found, but only {item.Value} in stock. You requested {-1 * quantity}. Please try again.");
                         return false;
                     }
                                     }
@@ -145,7 +143,7 @@ namespace Domains.Library
             string str = "";
             foreach (KeyValuePair<Product, int> item in inventory)
             {
-                str += $"Quantity = {item.Value} >> {item.Key.ToString()}";//\n in Product ToString method
+                str += $"Quantity = {item.Value} >> {item.Key.ToString()}\n";//\n in Product ToString method
             }
             return str;
         }

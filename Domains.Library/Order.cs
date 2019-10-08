@@ -44,51 +44,62 @@ namespace Domains.Library
             OrderLocation = location;
             orderId = Order.nextID;
             Order.nextID++;
-            basket = new Dictionary<Product, int>();
+            basket = new Dictionary<Product, int>() { };
         }
 
         /*
          * Attempts to add a product to the basket
          * if product exists in Location inventory, with enough in stock to fulfill request, add to basket and remove from inventory - returs true
          * else returns false
-         *
-        public bool addProduct(Product product, int quantity)
+         */
+        public bool AddItemToBasket(Product product, int quantity)
         {
-            if(OrderLocation.Inventory.Contains(product))
+            bool success = OrderLocation.AdjustQuantity(product, -1 * quantity);
+            if(success)
             {
-                if(product.Quantity >= quantity)
+                basket.Add(product, quantity);
+            }
+            return success;
+
+            /*
+            if(OrderLocation.Inventory.ContainsKey(product))
+            {
+                if(OrderLocation.Inventory[product] >= quantity)
                 {
-                    product.Quantity -= quantity;
+                    OrderLocation.Inventory[product] -= quantity;
                     basket.Add(product, quantity);
                     return true;
                 }
             }
             return false;
+            */
         }
 
         /*
          * Attempts to remove a product from the basket
          * if product exists in basket, with enough in basket to fulfill request, add to inventory and remove from basket - returns true
          * else returns false
-         *
-        public bool returnProduct(Product product, int quantity)
+         */
+        public bool ReturnProduct(Product product)
         {
-            if(basket.ContainsKey(product))
+            if (basket.ContainsKey(product))
             {
-                int numberInBasket;
-                basket.TryGetValue(product, out numberInBasket);
-                if(numberInBasket >= quantity)
-                {
-                    int newQuantity = numberInBasket - quantity;
-                    basket.Remove(product);
-                    basket.Add(product, newQuantity);
-                    product.Quantity += quantity;
-                    return true;
-                }
-            }
+                OrderLocation.Inventory[product] += basket[product];
+                basket.Remove(product);
+                return true;
+            }    
             return false;
         }
-        */
+
+        public override string ToString()
+        {
+            string str = "Order:\n";
+            foreach(KeyValuePair<Product, int> item in basket)
+            {
+                str += $"Quantity: {item.Value} , {item.Key.ToString()}\n";
+            }
+            return str;
+        }
 
 
     }

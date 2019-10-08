@@ -55,7 +55,7 @@ namespace Domains.Library
 
         public override string ToString()
         {
-            return $"ID: {this.ProductID} >> Name: {this.ProductName} :: {this.ProductDescription}\n";
+            return $"ID: {this.ProductID} >> Name: {this.ProductName} :: {this.ProductDescription}";
         }
     }
 }
