@@ -21,7 +21,7 @@ namespace Domains.Library
         private string storeName;
         private string address;
         private int storeID;
-        private List<Product> inventory;
+        private Dictionary<Product, int> inventory;
 
         //Properties
         public string StoreName
@@ -41,64 +41,48 @@ namespace Domains.Library
             get { return storeID; }
         }
 
-        public List<Product> Inventory
+        public Dictionary<Product, int> Inventory
         {
             get { return inventory; }
         }
 
         //Constructor
-        public Location(string name, string address, List<Product> startupInventory)
+        public Location(string name, string address)
         {
             StoreName = name;
             Address = address;
             storeID = Location.nextID;
             Location.nextID++;
-            inventory = startupInventory;
-
+            inventory = new Dictionary<Product, int> { };
+            
         }
 
         
         //adds a new product to inventory
-        public void AddNewItem(Product newItem)
+        public bool AddNewItem(Product newItem, int quantity)
         {
-            bool alreadyExists = false;
-            foreach (Product item in inventory)
+            if (newItem == null)
             {
-                if (newItem.ProductID == item.ProductID)
+                return false;
+            }
+            bool alreadyExists = false;
+            foreach (KeyValuePair<Product,int> item in inventory)
+            {
+                if (item.Key == newItem)
                 {
                     alreadyExists = true;
+                    break;
                 }
             }
             if(alreadyExists)
             {
-                Console.WriteLine("The item you are trying to add already exists in the inventory.");
+                Console.WriteLine("The item you are trying to add already exists in the inventory. Try adjusting quantity instead.");
+                return false;
             }
             else
             {
-                inventory.Add(newItem);
-            }
-        }
-
-        //adds a new product, with a custom quantity
-        //useful if you are adding the same product to different locations in different quantities
-        public void AddNewItem(Product newItem, int newQuantity)
-        {
-            bool alreadyExists = false;
-            foreach (Product item in inventory)
-            {
-                if (newItem.ProductID == item.ProductID)
-                {
-                    alreadyExists = true;
-                }
-            }
-            if (alreadyExists)
-            {
-                Console.WriteLine("The item you are trying to add already exists in the inventory.");
-            }
-            else
-            {
-                newItem.Quantity = newQuantity;
-                inventory.Add(newItem);
+                inventory.Add(newItem, quantity);
+                return true;
             }
         }
 
@@ -108,15 +92,15 @@ namespace Domains.Library
         public bool FindItemByName(string name, out Product product)
         {
             //loops through inventory comparing product until found
-            foreach(Product item in inventory)
+            foreach (KeyValuePair<Product, int> item in inventory)
             {
-                if(item.ProductName == name)
+                if (item.Key.ProductName == name)
                 {
-                    product = item;
+                    product = item.Key;
                     return true;
                 }
             }
-            Console.WriteLine("Item is not in inventory. FindItem() defaulted to empty item");
+            Console.WriteLine("Item is not in inventory.");
             product = null;
             return false;
         }
@@ -126,10 +110,27 @@ namespace Domains.Library
         //returns true if successful
         public bool AdjustQuantity(Product product, int quantity)
         {
-            if (product.Quantity + quantity < 0)
-                return false;
-            product.Quantity += quantity;
-            return true;
+            bool exists = false;
+            foreach (KeyValuePair<Product, int> item in inventory)
+            {
+                if (item.Key == product)
+                {
+                    exists = true;
+                    if(item.Value + quantity >= 0)
+                    {
+                        inventory[product] = item.Value + quantity;
+                        return true;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Product found, but only {item.Value} in stock. You requested {quantity}. Please try again.");
+                        return false;
+                    }
+                                    }
+            }
+            //when item is not found in inventory
+            Console.WriteLine("Product not found in this Location's inventory.");
+            return false;
         }
 
 
@@ -141,12 +142,12 @@ namespace Domains.Library
 
         public string InventoryToString()
         {
-            string inventoryInStringForm = "";
-            foreach(Product product in inventory)
+            string str = "";
+            foreach (KeyValuePair<Product, int> item in inventory)
             {
-                inventoryInStringForm += product.ToString();
+                str += $"Quantity = {item.Value} >> {item.Key.ToString()}";//\n in Product ToString method
             }
-            return inventoryInStringForm;
+            return str;
         }
 
 

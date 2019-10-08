@@ -12,32 +12,44 @@ namespace Store.App
         {
             string storeName = "Walmart";
             string address = "123 Main St";
-            var startupInventory = new List<Product>
-            {
-                new Product("taco","mexican food item",14),
-                new Product("burger","american food item",1)
-            };
+
+            //base products
+            Product taco = new Product("taco", "mexican food item");
+            Product burger = new Product("burger", "american food item");
+            Product coke = new Product("coke", "tasty drink");
+            Product pepsi = new Product("pepsi", "nasty drink");
+
+
+            var store1 = new Location(storeName, address);
+            //var store2 = new Location(storeName, "456 South St");
             
+            Console.WriteLine(store1.StoreName);
+            Console.WriteLine(store1.Address);
+            Console.WriteLine(store1.StoreID);
+            Console.WriteLine();
+            /*
+            Console.WriteLine(store2.StoreName);
+            Console.WriteLine(store2.Address);
+            Console.WriteLine(store2.StoreID);
+            Console.WriteLine();
+            */
+            store1.AddNewItem(taco, 14);
+            store1.AddNewItem(burger, 0);
+            store1.AddNewItem(coke, 100);
+            /*
+            store2.AddNewItem(taco, 10);
+            store2.AddNewItem(burger, 20);
+            store2.AddNewItem(pepsi, 100);
+            */
+            Console.WriteLine(store1.InventoryToString());
+            //Console.WriteLine(store2.InventoryToString());
 
-            var store = new Location("Walmart", "123 Main St", startupInventory);
-            Console.WriteLine(store.StoreName);
-            Console.WriteLine(store.Address);
-            Console.WriteLine(store.StoreID);
+            store1.AdjustQuantity(coke, 4);
+            //store2.AdjustQuantity(coke, 4);
 
-            Console.WriteLine(store.InventoryToString());
+            Console.WriteLine(store1.InventoryToString());
+            //Console.WriteLine(store2.InventoryToString());
 
-            Product coke = new Product("coke", "tasty drink", 15);
-            Product pepsi = new Product("pepsi", "nasty drink", 8);
-
-            store.AddNewItem(coke);
-            store.AddNewItem(pepsi, 100);
-
-            Console.WriteLine(store.InventoryToString());
-
-            store.AdjustQuantity(coke, 4);
-            store.AdjustQuantity(pepsi, -2);
-
-            Console.WriteLine(store.InventoryToString());
 
 
 

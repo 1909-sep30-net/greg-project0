@@ -51,7 +51,7 @@ namespace Domains.Library
          * Attempts to add a product to the basket
          * if product exists in Location inventory, with enough in stock to fulfill request, add to basket and remove from inventory - returs true
          * else returns false
-         */
+         *
         public bool addProduct(Product product, int quantity)
         {
             if(OrderLocation.Inventory.Contains(product))
@@ -70,7 +70,7 @@ namespace Domains.Library
          * Attempts to remove a product from the basket
          * if product exists in basket, with enough in basket to fulfill request, add to inventory and remove from basket - returns true
          * else returns false
-         */
+         *
         public bool returnProduct(Product product, int quantity)
         {
             if(basket.ContainsKey(product))
@@ -88,6 +88,7 @@ namespace Domains.Library
             }
             return false;
         }
+        */
 
 
     }

@@ -19,8 +19,7 @@ namespace Domains.Library
         private string productName;
         private string productDescription;
         private int productID;
-        private int quantity;
-
+        
 
         //Properties
         public string ProductName
@@ -40,29 +39,23 @@ namespace Domains.Library
             get { return productID; }
         }
 
-        public int Quantity
-        {
-            get { return quantity; }
-            set { quantity = value; }
-        }
-
         //Constructor
         //Constructor auto-sets Id based on static nextID
         //Will need to be editted with ID assignment is implemented
         //needs check that quantity is > 0
         //needs to reject new Products with same name
-        public Product(string name, string description, int quantity)
+        public Product(string name, string description)
         {
             ProductName = name;
             ProductDescription = description;
             productID = Product.nextID;
             Product.nextID++;
-            this.quantity = quantity;            
+                        
         }
 
         public override string ToString()
         {
-            return $"{this.ProductID} >> {this.ProductName} :: {this.Quantity} in stock\n";
+            return $"ID: {this.ProductID} >> Name: {this.ProductName} :: {this.ProductDescription}\n";
         }
     }
 }
