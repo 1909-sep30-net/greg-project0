@@ -16,19 +16,12 @@ namespace Domains.Library
         //static fields
         private static int nextID = 0;
 
-        //struct to connect a product with the amount in stock
-        public struct InventoryItem
-        {
-            public Product product;
-            public int quantity;
-
-        }
-
+       
         //fields
         private string storeName;
         private string address;
         private int storeID;
-        private List<InventoryItem> inventory;
+        private List<Product> inventory;
 
         //Properties
         public string StoreName
@@ -48,18 +41,19 @@ namespace Domains.Library
             get { return storeID; }
         }
 
-        public List<InventoryItem> Inventory
+        public List<Product> Inventory
         {
             get { return inventory; }
         }
 
         //Constructor
-        public Location(string name, string address)
+        public Location(string name, string address, List<Product> startupInventory)
         {
             StoreName = name;
             Address = address;
             storeID = Location.nextID;
             Location.nextID++;
+            inventory = startupInventory;
 
         }
 
@@ -69,12 +63,14 @@ namespace Domains.Library
 
         //sell single item
         //sell multiple of item
-        public void AddNewItem(InventoryItem newItem)
+
+        //adds a new product to inventory
+        public void AddNewItem(Product newItem)
         {
             bool alreadyExists = false;
-            foreach (InventoryItem item in inventory)
+            foreach (Product item in inventory)
             {
-                if (newItem.product == item.product)
+                if (newItem.ProductID == item.ProductID)
                 {
                     alreadyExists = true;
                 }
@@ -89,45 +85,78 @@ namespace Domains.Library
             }
         }
 
-        //returns default empty item, not optimal
-        
-        private InventoryItem FindItem(Product product)
+        //adds a new product, with a custom quantity
+        //useful if you are adding the same product to different locations in different quantities
+        public void AddNewItem(Product newItem, int newQuantity)
+        {
+            bool alreadyExists = false;
+            foreach (Product item in inventory)
+            {
+                if (newItem.ProductID == item.ProductID)
+                {
+                    alreadyExists = true;
+                }
+            }
+            if (alreadyExists)
+            {
+                Console.WriteLine("The item you are trying to add already exists in the inventory.");
+            }
+            else
+            {
+                newItem.Quantity = newQuantity;
+                inventory.Add(newItem);
+            }
+        }
+
+        //return true if successfully found item
+        //out Product product is the matched product if true, or null if false.
+
+        public bool FindItemByName(string name, out Product product)
         {
             //loops through inventory comparing product until found
-            foreach(InventoryItem item in inventory)
+            foreach(Product item in inventory)
             {
-                if(item.product == product)
+                if(item.ProductName == name)
                 {
-                    return item;
+                    product = item;
+                    return true;
                 }
             }
             Console.WriteLine("Item is not in inventory. FindItem() defaulted to empty item");
-            return new InventoryItem();
+            product = null;
+            return false;
         }
 
-        //increase the quanity of a product in the inventory
+        //adjusts the quanity of a product in the inventory
+        //increase if quantity is positive, decrease if quantity is negative
         //returns true if successful
         public bool AdjustQuantity(Product product, int quantity)
         {
-            var item = FindItem(product);
-            if(item.quantity == -1)
-            {
+            if (product.Quantity + quantity < 0)
                 return false;
-            }
-            item.quantity += quantity;
+            product.Quantity += quantity;
             return true;
         }
+
 
         //Will be implemented after Order.cs is implemented
         public bool ProcessOrder(Order order)
         {
             return false;
         }
-        
+
+        public string InventoryToString()
+        {
+            string inventoryInStringForm = "";
+            foreach(Product product in inventory)
+            {
+                inventoryInStringForm += product.ToString();
+            }
+            return inventoryInStringForm;
+        }
 
 
-        
-        
+
     }
 
 }
