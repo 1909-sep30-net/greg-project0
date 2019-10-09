@@ -93,10 +93,10 @@ namespace Domains.Library
 
         public override string ToString()
         {
-            string str = "Order:\n";
+            string str = "";
             foreach(KeyValuePair<Product, int> item in basket)
             {
-                str += $"Quantity: {item.Value} , {item.Key.ToString()}\n";
+                str += $"    QUANTITY: {item.Value},  {item.Key.ToString()}\n";
             }
             return str;
         }

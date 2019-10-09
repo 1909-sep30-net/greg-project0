@@ -55,7 +55,10 @@ namespace Domains.Library
             Customer.nextID++;
         }
 
-
+        public override string ToString()
+        {
+            return $"ID:{CustID},  FIRST NAME: {FirstName},  LAST NAME: {LastName}";
+        }
 
 
 

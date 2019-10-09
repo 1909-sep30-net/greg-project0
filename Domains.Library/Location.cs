@@ -148,6 +148,11 @@ namespace Domains.Library
             return str;
         }
 
+        public override string ToString()
+        {
+            return $"ID : {StoreID},  NAME: {StoreName},  ADDRESS: {Address} ";
+        }
+
 
 
     }
