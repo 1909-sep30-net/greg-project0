@@ -12,6 +12,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domains.Library", "Domains.Library\Domains.Library.csproj", "{B2D7F9A7-EF5D-4021-8B90-D445D936A777}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnitDomainsLibrary", "XUnitDomainsLibrary\XUnitDomainsLibrary.csproj", "{2183263A-07E7-4B6D-9FC0-219D41AA69D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbLibrary.Library", "DbLibrary.Library\DbLibrary.Library.csproj", "{84A6A2C8-9E05-4070-94CD-245FDCD30B03}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +30,14 @@ Global
 		{B2D7F9A7-EF5D-4021-8B90-D445D936A777}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2D7F9A7-EF5D-4021-8B90-D445D936A777}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2D7F9A7-EF5D-4021-8B90-D445D936A777}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2183263A-07E7-4B6D-9FC0-219D41AA69D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2183263A-07E7-4B6D-9FC0-219D41AA69D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2183263A-07E7-4B6D-9FC0-219D41AA69D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2183263A-07E7-4B6D-9FC0-219D41AA69D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84A6A2C8-9E05-4070-94CD-245FDCD30B03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84A6A2C8-9E05-4070-94CD-245FDCD30B03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84A6A2C8-9E05-4070-94CD-245FDCD30B03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84A6A2C8-9E05-4070-94CD-245FDCD30B03}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
