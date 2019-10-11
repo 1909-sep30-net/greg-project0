@@ -4,24 +4,19 @@ using System.Text;
 
 namespace Domains.Library
 {
-    /*
-     * NOTES 
-     * Id is currently a private property only accessed in the Customer constructor
-     * Any adjustment to ID must be made in constructor as it affects static nextID field
-     */
+    
     public class Product
     {
 
-        //static fields
-        private static int nextID = 0;
-
-        //fields
+        //fields affected by properties
         private string productName;
         private string productDescription;
         private int productID;
-        
 
-        //Properties
+
+        /// <summary>
+        /// The product name. Cannot be null, empty, or longer than 50 characters.
+        /// </summary>
         public string ProductName
         {
             get { return productName; }
@@ -37,6 +32,9 @@ namespace Domains.Library
             }
         }
 
+        /// <summary>
+        /// The product description. Cannot be null, empty, or longer than 200 characters.
+        /// </summary>
         public string ProductDescription
         {
             get { return productDescription; }
@@ -50,22 +48,32 @@ namespace Domains.Library
             }
         }
 
+        /// <summary>
+        /// The product id. Must be bewteen 1 and 1000, inclusive.
+        /// </summary>
         public int ProductID
         {
             get { return productID; }
+            set
+            {
+                if (value <= 0 || value > 1000)
+                    throw new ArgumentOutOfRangeException("Product Id must be greater than 0 but less than or equal to 1000.");
+                else
+                    productID = value;
+            }
         }
 
-        //Constructor
-        //Constructor auto-sets Id based on static nextID
-        //Will need to be editted with ID assignment is implemented
-        //needs check that quantity is > 0
-        //needs to reject new Products with same name
-        public Product(string name, string description)
+        /// <summary>
+        /// Constructor of a new Product
+        /// </summary>
+        /// <param name="name">The Product name</param>
+        /// <param name="description">The product description</param>
+        /// <param name="productId">The product Id, needs to be set by db!</param>
+        public Product(string name, string description, int productId)
         {
             ProductName = name;
             ProductDescription = description;
-            productID = Product.nextID;
-            Product.nextID++;
+            ProductID = productId;
                         
         }
 

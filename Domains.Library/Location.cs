@@ -4,26 +4,22 @@ using System.Text;
 
 namespace Domains.Library
 {
-    /*
-     * NOTES 
-     * Id is currently a private property only accessed in the Customer constructor
-     * Any adjustment to ID must be made in constructor as it affects static nextID field
-     */
+    
     public class Location
     {
-
-
-        //static fields
-        private static int nextID = 0;
-
-       
-        //fields
+        //fields affected by Properties
         private string storeName;
         private string address;
         private int storeID;
-        private Dictionary<Product, int> inventory;
 
-        //Properties
+        /// <summary>
+        /// The store's inventory of Products and quantities
+        /// </summary>
+        public Dictionary<Product, int> inventory;
+
+        /// <summary>
+        /// The store's name. Cannot be null, empty, or longer than 50 characters.
+        /// </summary>
         public string StoreName
         {
             get { return storeName; }
@@ -39,6 +35,9 @@ namespace Domains.Library
             }
         }
 
+        /// <summary>
+        /// The store's address name. Cannot be null, empty, or longer than 163 characters.
+        /// </summary>
         public string Address
         {
             get { return address; }
@@ -54,24 +53,40 @@ namespace Domains.Library
             }
         }
 
+        /// <summary>
+        /// The Store's ID, should only be set by db!!!
+        /// </summary>
         public int StoreID
         {
             get { return storeID; }
+            set{
+                if (value <= 0 || value > 1000)
+                    throw new ArgumentOutOfRangeException("Product Id must be greater than 0 but less than or equal to 1000.");
+                else
+                    StoreID = value;
+            }
         }
 
+        /// <summary>
+        /// The sotre's inventory
+        /// </summary>
         public Dictionary<Product, int> Inventory
         {
             get { return inventory; }
         }
 
-        //Constructor
-        public Location(string name, string address)
+        /// <summary>
+        /// The constructor for a new Location/Store
+        /// </summary>
+        /// <param name="name">The store's name</param>
+        /// <param name="address">The Store's address</param>
+        /// <param name="storeId">The Store's Id - should be set by db!</param>
+        public Location(string name, string address, int storeId)
         {
             StoreName = name;
             Address = address;
-            storeID = Location.nextID;
-            Location.nextID++;
-            inventory = new Dictionary<Product, int> { };
+            StoreID = storeId;
+            inventory = new Dictionary<Product, int> { };//initialize an empty inventory
             
         }
 

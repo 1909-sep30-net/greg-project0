@@ -4,22 +4,18 @@ using System.Text;
 
 namespace Domains.Library
 {
-    /*
-     * NOTES 
-     * Id is currently a private property only accessed in the Customer constructor
-     * Any adjustment to ID must be made in constructor as it affects static nextID field
-     */
     public class Customer
     {
-        //static fields
-        private static int nextID = 0;
-
-        //fields
+        
+        //Fields affected by Properties
         private string firstName;
         private string lastName;
         private int custID;
 
         //Properties
+        /// <summary>
+        /// The customer's first name. Cannot be null, empty, or longer than 50 characters.
+        /// </summary>
         public string FirstName
         {
             get { return firstName; }
@@ -34,6 +30,9 @@ namespace Domains.Library
             }
         }
 
+        /// <summary>
+        /// The customer's last name.  Cannot be null, empty, or longer than 50 characters.
+        /// </summary>
         public string LastName
         {
             get { return lastName; }
@@ -49,27 +48,42 @@ namespace Domains.Library
             }
         }
 
-        //returns string - formatted full name
+        /// <summary>
+        /// Returns the customer's full name, a representation of the first and last names.
+        /// </summary>
         public string FullName
         {
             get { return firstName + " " + lastName; }
         }
 
+        /// <summary>
+        /// Returns the customer's id.
+        /// </summary>
         public int CustID
         {
             get { return custID; }
+            set
+            {
+                if(value <= 0 || value > 1000)
+                    throw new ArgumentOutOfRangeException("Customer Id must be greater than 0 but less than or equal to 1000.");
+                else
+                    custID = value;
+            }
         }
 
         
 
-        //Constructor auto-sets Id based on static nextID
-        //Will need to be editted with ID assignment is implemented
-        public Customer(string firstName, string lastName)
+        /// <summary>
+        /// Constructer for a new Customer
+        /// </summary>
+        /// <param name="firstName">The first name of the customer.</param>
+        /// <param name="lastName">The last name of the customer.</param>
+        /// <param name="custID">The ID of the customer: must come from the Db!</param>
+        public Customer(string firstName, string lastName, int custID)
         {
             FirstName = firstName;
             LastName = lastName;
-            custID = Customer.nextID;
-            Customer.nextID++;
+            CustID = CustID;
         }
 
         public override string ToString()

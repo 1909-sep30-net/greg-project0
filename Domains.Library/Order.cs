@@ -4,24 +4,21 @@ using System.Text;
 
 namespace Domains.Library
 {
-    /*
-     * NOTES 
-     * Id is currently a private property only accessed in the Customer constructor
-     * Any adjustment to ID must be made in constructor as it affects static nextID field
-     */
     public class Order
     {
-        //static fields
-        private static int nextID = 0;
-
-        //fields
+        //fields affected by Properties
         private Customer orderCustomer;
         private Location orderLocation;
         private int orderId;
 
+        /// <summary>
+        /// The items on the order and the quantity of them
+        /// </summary>
         private Dictionary<Product, int> basket;//<Product object, int quantity>
 
-        //Properties
+        /// <summary>
+        /// The Customer who made the order
+        /// </summary>
         public Customer OrderCustomer
         {
             get { return orderCustomer; }
@@ -34,6 +31,10 @@ namespace Domains.Library
                     orderCustomer = value;
             }
         }
+
+        /// <summary>
+        /// The Location where the order was name.
+        /// </summary>
         public Location OrderLocation
         {
             get { return orderLocation; }
@@ -46,19 +47,34 @@ namespace Domains.Library
                     orderLocation = value;
             }
         }
+
+        /// <summary>
+        /// The Order ID. Should only be set by db!!!
+        /// </summary>
         public int OrderId
         {
             get { return orderId; }
+            set
+            {
+                if (value <= 0 || value > 1000)
+                    throw new ArgumentOutOfRangeException("Order Id must be greater than 0 but less than or equal to 1000.");
+                else
+                    orderId = value;
+            }
         }
 
-        //Constructor
-        public Order(Customer customer, Location location)
+        /// <summary>
+        /// Constructor for an order.
+        /// </summary>
+        /// <param name="customer">The customer of the order</param>
+        /// <param name="location">The location of the order</param>
+        /// <param name="orderId">The id of the order - should only be set by db!</param>
+        public Order(Customer customer, Location location, int orderId)
         {
             OrderCustomer = customer;
             OrderLocation = location;
-            orderId = Order.nextID;
-            Order.nextID++;
-            basket = new Dictionary<Product, int>() { };
+            OrderId = orderId;
+            basket = new Dictionary<Product, int>() { };//initialize an empty basket
         }
 
         /*
