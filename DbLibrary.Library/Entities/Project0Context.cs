@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace DbLibrary.Library
+namespace DbLibrary.Library.Entities
 {
     public partial class Project0Context : DbContext
     {
@@ -22,6 +22,7 @@ namespace DbLibrary.Library
         public virtual DbSet<Product> Product { get; set; }
         public virtual DbSet<Reciept> Reciept { get; set; }
 
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

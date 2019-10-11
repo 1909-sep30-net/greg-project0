@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DbLibrary.Library
+namespace DbLibrary.Library.Entities
 {
-    public partial class Customer
+    public partial class Location
     {
-        public Customer()
+        public Location()
         {
+            Inventory = new HashSet<Inventory>();
             Reciept = new HashSet<Reciept>();
         }
 
-        public int CustomerId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public int LocationId { get; set; }
+        public string LocationName { get; set; }
         public string Street { get; set; }
         public string City { get; set; }
         public string State { get; set; }
         public string ZipCode { get; set; }
 
+        public virtual ICollection<Inventory> Inventory { get; set; }
         public virtual ICollection<Reciept> Reciept { get; set; }
     }
 }

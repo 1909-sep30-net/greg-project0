@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DbLibrary.Library
+namespace DbLibrary.Library.Entities
 {
     public partial class Reciept
     {
