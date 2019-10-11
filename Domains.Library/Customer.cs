@@ -23,13 +23,30 @@ namespace Domains.Library
         public string FirstName
         {
             get { return firstName; }
-            set { firstName = value; }
+            set 
+            {
+                if (value == null || value == "")
+                    throw new ArgumentNullException("Customer name cannot be null or empty string.");
+                else if (value.Length > 50)
+                    throw new ArgumentOutOfRangeException("Customer First Name cannot be greater than 50 characters.");
+                else
+                    firstName = value;
+            }
         }
 
         public string LastName
         {
             get { return lastName; }
-            set { lastName = value; }
+            //set { lastName = value; }
+            set
+            {
+                if (value == null || value == "")
+                    throw new ArgumentNullException("Customer Last name cannot be null or empty string.");
+                else if (value.Length > 50)
+                    throw new ArgumentOutOfRangeException("Customer Last Name cannot be greater than 50 characters.");
+                else
+                    firstName = value;
+            }
         }
 
         //returns string - formatted full name

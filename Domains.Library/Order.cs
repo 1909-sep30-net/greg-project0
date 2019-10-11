@@ -25,12 +25,26 @@ namespace Domains.Library
         public Customer OrderCustomer
         {
             get { return orderCustomer; }
-            set { orderCustomer = value; }
+            //set { orderCustomer = value; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("Customer cannot be null.");
+                else
+                    orderCustomer = value;
+            }
         }
         public Location OrderLocation
         {
             get { return orderLocation; }
-            set { orderLocation = value; }
+            //set { orderLocation = value; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("Location/Address cannot be null.");
+                else
+                    orderLocation = value;
+            }
         }
         public int OrderId
         {

@@ -27,13 +27,31 @@ namespace Domains.Library
         public string StoreName
         {
             get { return storeName; }
-            set { storeName = value; }
+            //set { storeName = value; }
+            set
+            {
+                if (value == null || value == "")
+                    throw new ArgumentNullException("Store/Location name cannot be null or empty string.");
+                else if (value.Length > 50)
+                    throw new ArgumentOutOfRangeException("Store/Location name cannot be greater than 50 characters.");
+                else
+                    storeName = value;
+            }
         }
 
         public string Address
         {
             get { return address; }
-            set { address = value; }
+            //set { address = value; }
+            set
+            {
+                if (value == null || value == "")
+                    throw new ArgumentNullException("Address cannot be null or empty string.");
+                else if (value.Length > 163)//163 derived from DB 50 (Street) + 1 (space) + 50 (City) + 1 (space) + 50 (State) + 1 (space) + 10 (ZIP)
+                    throw new ArgumentOutOfRangeException("Address cannot be greater than 163 characters.");
+                else
+                    address = value;
+            }
         }
 
         public int StoreID

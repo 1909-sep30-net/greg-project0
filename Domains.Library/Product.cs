@@ -25,13 +25,29 @@ namespace Domains.Library
         public string ProductName
         {
             get { return productName; }
-            set { productName = value; }
+            //set { productName = value; }
+            set
+            {
+                if (value == null || value == "")
+                    throw new ArgumentNullException("Product name cannot be null or empty string.");
+                else if (value.Length > 50)
+                    throw new ArgumentOutOfRangeException("Product First Name cannot be greater than 50 characters.");
+                else
+                    productName = value;
+            }
         }
 
         public string ProductDescription
         {
             get { return productDescription; }
-            set { productDescription = value; }
+            //set { productDescription = value; }
+            set
+            {
+                if (value.Length > 200)
+                    throw new ArgumentOutOfRangeException("Description cannot be greater than 200 characters.");
+                else
+                    productName = value;
+            }
         }
 
         public int ProductID
