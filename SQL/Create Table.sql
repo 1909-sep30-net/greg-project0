@@ -54,7 +54,7 @@ FK_Inventory_Product FOREIGN KEY (ProductId) REFERENCES Product (ProductId)
 
 --Create Reciept (Order) Table
 GO
-CREATE TABLE Reciept
+CREATE TABLE Receipt
 (
 	RecieptId INT IDENTITY(100000, 1) PRIMARY KEY,
 	LocationId INT NOT NULL, --Foreign Key

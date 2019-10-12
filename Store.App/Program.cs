@@ -2,6 +2,8 @@
 using Domains.Library;
 using Serilog;
 using System.Collections.Generic;
+using DbLibrary.Library;
+using System.Linq;
 
 namespace Store.App
 {
@@ -9,7 +11,8 @@ namespace Store.App
     {
         static void Main(string[] args)
         {
-            string connectionString = Hidden.connectionString;
+
+            //Customer greg = Mapper.MapCustomer(context.Customer...);
 
 
         }
