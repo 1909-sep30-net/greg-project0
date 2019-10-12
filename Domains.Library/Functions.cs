@@ -6,6 +6,7 @@ namespace Domains.Library
 {
     public static class Functions
     {
+        /*
         public static Dictionary<int, Customer> customers = new Dictionary<int, Customer> { };
         public static Dictionary<int, Location> locations = new Dictionary<int, Location> { };
         public static Dictionary<int, Product> products = new Dictionary<int, Product> { };
@@ -133,7 +134,7 @@ namespace Domains.Library
             {
                 return "Invalid Customer Key Entered\n";
             }
-        }
+        }*/
 
         //input validation
 

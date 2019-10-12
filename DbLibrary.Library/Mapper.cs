@@ -7,6 +7,7 @@ namespace DbLibrary.Library
     {
         public static Domains.Library.Customer MapCustomer(Entities.Customer custSQL)
         {
+            Console.WriteLine(custSQL.CustomerId);
             return new Domains.Library.Customer(custSQL.FirstName, custSQL.LastName, custSQL.CustomerId);
         }
 

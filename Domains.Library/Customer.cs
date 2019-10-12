@@ -64,8 +64,9 @@ namespace Domains.Library
             get { return custID; }
             set
             {
-                if(value <= 0 || value > 1000)
-                    throw new ArgumentOutOfRangeException("Customer Id must be greater than 0 but less than or equal to 1000.");
+                Console.WriteLine(value);
+                if(value < 1000 || value >= 2000)
+                    throw new ArgumentOutOfRangeException("Customer Id # must be 1000 <= # < 2000");
                 else
                     custID = value;
             }
@@ -83,7 +84,7 @@ namespace Domains.Library
         {
             FirstName = firstName;
             LastName = lastName;
-            CustID = CustID;
+            CustID = custID;
         }
 
         public override string ToString()

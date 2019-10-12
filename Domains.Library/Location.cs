@@ -61,7 +61,7 @@ namespace Domains.Library
             get { return storeID; }
             set{
                 if (value <= 0 || value > 1000)
-                    throw new ArgumentOutOfRangeException("Product Id must be greater than 0 but less than or equal to 1000.");
+                    throw new ArgumentOutOfRangeException("Store/Location Id # must be 1000 <= # < 2000");
                 else
                     StoreID = value;
             }
