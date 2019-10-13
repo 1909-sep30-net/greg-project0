@@ -14,10 +14,20 @@ namespace DbLibrary.Library.Repositories
         public CustomerRepo(Entities.Project0Context dbContext) =>
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
 
-        public IEnumerable<dom.Customer> GetCustomers()
+        public IEnumerable<dom.Customer> GetCustomers(string firstName = null, string lastName = null)
         {
             IQueryable<Entities.Customer> items = _dbContext.Customer;
             
+            if(firstName != null)
+            {
+                items = items.Where(c => c.FirstName.Contains(firstName));
+            }
+
+            if (lastName != null)
+            {
+                items = items.Where(c => c.LastName.Contains(lastName));
+            }
+
             return items.Select(Mapper.MapCustomer);
         }
 

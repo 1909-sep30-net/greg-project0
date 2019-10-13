@@ -25,13 +25,10 @@ namespace Store.App
             var locContext = new DbRepo.LocationRepo(dbContext);
             var ordContext = new DbRepo.OrderRepo(dbContext);
 
-            //Add a domain customer to the database
-            var domTestCustomer = new dom.Customer(firstName:"Bill", lastName:"Hernandez");
-            custContext.AddCustomer(domTestCustomer);
-            custContext.Save();
+            
 
             //Get all of our Domain Data into usable List<>'s
-            var customers = custContext.GetCustomers().ToList();
+            var customers = custContext.GetCustomers(firstName:"Jim").ToList();
             int numberOfCustomers = customers.Count;
             Console.WriteLine(numberOfCustomers);
 
@@ -51,6 +48,16 @@ namespace Store.App
             
 
 
+        }
+
+        private void Notes()
+        {
+            //Add a domain customer to the database
+            /*
+            var domTestCustomer = new dom.Customer(firstName:"Bill", lastName:"Hernandez");
+            custContext.AddCustomer(domTestCustomer);
+            custContext.Save();
+            */
         }
     }
 }
