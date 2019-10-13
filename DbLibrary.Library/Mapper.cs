@@ -1,25 +1,36 @@
 ﻿using System;
 using System.Linq;
+using dom = Domains.Library;
 
 namespace DbLibrary.Library
 {
     public static class Mapper
     {
-        public static Domains.Library.Customer MapCustomer(Entities.Customer custSQL)
+        public static dom.Customer MapCustomer(Entities.Customer custEnt)
         {
-            return new Domains.Library.Customer(custSQL.FirstName, custSQL.LastName, custSQL.CustomerId);
+            return new dom.Customer(custEnt.FirstName, custEnt.LastName, custEnt.CustomerId);
         }
 
-        public static Domains.Library.Product MapProduct(Entities.Product prodSQL)
+        public static Entities.Customer MapCustomer(dom.Customer custDom)
         {
-            return new Domains.Library.Product(prodSQL.ProductName, prodSQL.ProductDescription, prodSQL.ProductId);
+            return new Entities.Customer
+            {
+                //CustomerId = custDom.CustID,
+                FirstName = custDom.FirstName,
+                LastName = custDom.LastName
+            };
         }
 
-        public static Domains.Library.Location MapLocation(Entities.Location locSQL)
+        public static dom.Product MapProduct(Entities.Product prodEnt)
         {
-            string address = $"{locSQL.Street} {locSQL.City} {locSQL.State} {locSQL.ZipCode}";
-            var loc = new Domains.Library.Location(locSQL.LocationName, address, locSQL.LocationId);  
-            foreach(Entities.Inventory item in locSQL.Inventory)
+            return new dom.Product(prodEnt.ProductName, prodEnt.ProductDescription, prodEnt.ProductId);
+        }
+
+        public static dom.Location MapLocation(Entities.Location locEnt)
+        {
+            string address = $"{locEnt.Street} {locEnt.City} {locEnt.State} {locEnt.ZipCode}";
+            var loc = new dom.Location(locEnt.LocationName, address, locEnt.LocationId);  
+            foreach(Entities.Inventory item in locEnt.Inventory)
             {
                 var prod = MapProduct(item.Product);
                 loc.AddNewItem(prod, item.Quantity);
@@ -28,12 +39,12 @@ namespace DbLibrary.Library
         }
         
         //note that Domain order = Entity reciept
-        public static Domains.Library.Order MapOrder(Entities.Reciept ordSQL)
+        public static dom.Order MapOrder(Entities.Reciept ordEnt)
         {
-            var cust = MapCustomer(ordSQL.Customer);
-            var loc = MapLocation(ordSQL.Location);
-            var ord = new Domains.Library.Order(cust, loc, ordSQL.RecieptId);
-            foreach(Entities.Basket item in ordSQL.Basket)
+            var cust = MapCustomer(ordEnt.Customer);
+            var loc = MapLocation(ordEnt.Location);
+            var ord = new dom.Order(cust, loc, ordEnt.RecieptId);
+            foreach(Entities.Basket item in ordEnt.Basket)
             {
                 var prod = MapProduct(item.Product);
                 ord.AddItemToBasket(prod, item.Quantity);

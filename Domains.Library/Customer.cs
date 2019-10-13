@@ -44,7 +44,7 @@ namespace Domains.Library
                 else if (value.Length > 50)
                     throw new ArgumentOutOfRangeException("Customer Last Name cannot be greater than 50 characters.");
                 else
-                    firstName = value;
+                    lastName = value;
             }
         }
 
@@ -64,10 +64,7 @@ namespace Domains.Library
             get { return custID; }
             set
             {
-                if(value < 1000 || value >= 2000)
-                    throw new ArgumentOutOfRangeException("Customer Id # must be 1000 <= # < 2000");
-                else
-                    custID = value;
+                custID = value;
             }
         }
 
@@ -79,7 +76,7 @@ namespace Domains.Library
         /// <param name="firstName">The first name of the customer.</param>
         /// <param name="lastName">The last name of the customer.</param>
         /// <param name="custID">The ID of the customer: must come from the Db!</param>
-        public Customer(string firstName, string lastName, int custID)
+        public Customer(string firstName, string lastName, int custID = 0)
         {
             FirstName = firstName;
             LastName = lastName;
