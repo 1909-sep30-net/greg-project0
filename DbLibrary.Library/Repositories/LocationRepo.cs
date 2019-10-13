@@ -5,18 +5,18 @@ using System.Text;
 
 namespace DbLibrary.Library.Repositories
 {
-    public class CustomerRepo
+    public class LocationRepo
     {
         private readonly Entities.Project0Context _dbContext;
 
-        public CustomerRepo(Entities.Project0Context dbContext) =>
+        public LocationRepo(Entities.Project0Context dbContext) =>
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
 
-        public IEnumerable<Domains.Library.Customer> GetCustomers()
+        public IEnumerable<Domains.Library.Location> GetLocations()
         {
-            IQueryable<Entities.Customer> items = _dbContext.Customer;
+            IQueryable<Entities.Location> items = _dbContext.Location;
             
-            return items.Select(Mapper.MapCustomer);
+            return items.Select(Mapper.MapLocation);
         }
     }
 }

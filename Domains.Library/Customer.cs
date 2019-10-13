@@ -64,7 +64,6 @@ namespace Domains.Library
             get { return custID; }
             set
             {
-                Console.WriteLine(value);
                 if(value < 1000 || value >= 2000)
                     throw new ArgumentOutOfRangeException("Customer Id # must be 1000 <= # < 2000");
                 else
