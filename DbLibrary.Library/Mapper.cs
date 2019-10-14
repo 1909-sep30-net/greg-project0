@@ -15,7 +15,7 @@ namespace DbLibrary.Library
         {
             return new Entities.Customer
             {
-                //CustomerId = custDom.CustID,
+                CustomerId = custDom.CustID,
                 FirstName = custDom.FirstName,
                 LastName = custDom.LastName
             };
@@ -38,18 +38,19 @@ namespace DbLibrary.Library
             return loc;
         }
         
-        //note that Domain order = Entity reciept
-        public static dom.Order MapOrder(Entities.Reciept ordEnt)
+        //note that Domain order = Entity receipt
+        public static dom.Order MapOrder(Entities.Receipt ordEnt)
         {
-            var cust = MapCustomer(ordEnt.Customer);
-            var loc = MapLocation(ordEnt.Location);
-            var ord = new dom.Order(cust, loc, ordEnt.RecieptId);
+            Console.WriteLine(ordEnt.CustomerId); //prints 1000
+            var custDom = MapCustomer(ordEnt.Customer);
+            var locDom = MapLocation(ordEnt.Location);
+            var ordDom= new dom.Order(custDom, locDom, ordEnt.ReceiptId);
             foreach(Entities.Basket item in ordEnt.Basket)
             {
-                var prod = MapProduct(item.Product);
-                ord.AddItemToBasket(prod, item.Quantity);
+                var prodDom = MapProduct(item.Product);
+                ordDom.AddItemToBasket(prodDom, item.Quantity);
             }
-            return ord;
+            return ordDom;
         }
     }
 }

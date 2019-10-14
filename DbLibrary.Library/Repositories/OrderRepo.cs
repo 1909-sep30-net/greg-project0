@@ -16,8 +16,8 @@ namespace DbLibrary.Library.Repositories
 
         public IEnumerable<dom.Order> GetOrders()
         {
-            IQueryable<Entities.Reciept> items = _dbContext.Reciept;
-
+            IQueryable<Entities.Receipt> items = _dbContext.Receipt;
+            Console.WriteLine(items.Count());
             return items.Select(Mapper.MapOrder);
         }
     }

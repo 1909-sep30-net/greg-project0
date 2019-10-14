@@ -9,8 +9,10 @@ namespace DbLibrary.Library.Repositories
 {
     public class CustomerRepo
     {
+        //context field
         private readonly Entities.Project0Context _dbContext;
 
+        //constructor(context field)
         public CustomerRepo(Entities.Project0Context dbContext) =>
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
 
@@ -31,6 +33,11 @@ namespace DbLibrary.Library.Repositories
             return items.Select(Mapper.MapCustomer);
         }
 
+        public Entities.Customer GetCustomerById(int custEntId)
+        {
+            return _dbContext.Customer.Where(i => i.CustomerId.Equals(custEntId)).FirstOrDefault();
+        }
+
         public void AddCustomer(dom.Customer custDom)
         {
             if(custDom.CustID != 0)
@@ -40,6 +47,18 @@ namespace DbLibrary.Library.Repositories
             Entities.Customer custEnt = Mapper.MapCustomer(custDom);
             custEnt.CustomerId = 0;
             _dbContext.Add(custEnt);
+        }
+
+        public IEnumerable<dom.Order> GetOrders(Entities.Customer custEnt)
+        {
+            IEnumerable<dom.Order> result = new List<dom.Order> { };
+            //Console.WriteLine(custEnt.Receipt.Count);
+            foreach( Entities.Receipt item in custEnt.Receipt)
+            {
+                result.Append(Mapper.MapOrder(item));
+            }
+
+            return result;
         }
 
         public void Save()

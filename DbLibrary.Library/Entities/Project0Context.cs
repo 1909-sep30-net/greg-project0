@@ -20,9 +20,16 @@ namespace DbLibrary.Library.Entities
         public virtual DbSet<Inventory> Inventory { get; set; }
         public virtual DbSet<Location> Location { get; set; }
         public virtual DbSet<Product> Product { get; set; }
-        public virtual DbSet<Reciept> Reciept { get; set; }
+        public virtual DbSet<Receipt> Receipt { get; set; }
 
-        
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseSqlServer("Server=tcp:revaturegregsql.database.windows.net,1433;Initial Catalog=Project0;Persist Security Info=False;User ID=gpyofavv;Password=Bobpieman2;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,11 +41,11 @@ namespace DbLibrary.Library.Entities
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Basket_Product");
 
-                entity.HasOne(d => d.Reciept)
+                entity.HasOne(d => d.Receipt)
                     .WithMany(p => p.Basket)
-                    .HasForeignKey(d => d.RecieptId)
+                    .HasForeignKey(d => d.ReceiptId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Basket_Reciept");
+                    .HasConstraintName("FK_Basket_Receipt");
             });
 
             modelBuilder.Entity<Customer>(entity =>
@@ -77,25 +84,17 @@ namespace DbLibrary.Library.Entities
 
             modelBuilder.Entity<Location>(entity =>
             {
-                entity.Property(e => e.City)
-                    .IsRequired()
-                    .HasMaxLength(50);
+                entity.Property(e => e.City).HasMaxLength(50);
 
                 entity.Property(e => e.LocationName)
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.Property(e => e.State)
-                    .IsRequired()
-                    .HasMaxLength(50);
+                entity.Property(e => e.State).HasMaxLength(50);
 
-                entity.Property(e => e.Street)
-                    .IsRequired()
-                    .HasMaxLength(50);
+                entity.Property(e => e.Street).HasMaxLength(50);
 
-                entity.Property(e => e.ZipCode)
-                    .IsRequired()
-                    .HasMaxLength(10);
+                entity.Property(e => e.ZipCode).HasMaxLength(10);
             });
 
             modelBuilder.Entity<Product>(entity =>
@@ -109,19 +108,19 @@ namespace DbLibrary.Library.Entities
                 entity.Property(e => e.UnitCost).HasColumnType("money");
             });
 
-            modelBuilder.Entity<Reciept>(entity =>
+            modelBuilder.Entity<Receipt>(entity =>
             {
                 entity.HasOne(d => d.Customer)
-                    .WithMany(p => p.Reciept)
+                    .WithMany(p => p.Receipt)
                     .HasForeignKey(d => d.CustomerId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Reciept_Customer");
+                    .HasConstraintName("FK_Receipt_Customer");
 
                 entity.HasOne(d => d.Location)
-                    .WithMany(p => p.Reciept)
+                    .WithMany(p => p.Receipt)
                     .HasForeignKey(d => d.LocationId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Reciept_Location");
+                    .HasConstraintName("FK_Receipt_Location");
             });
 
             OnModelCreatingPartial(modelBuilder);

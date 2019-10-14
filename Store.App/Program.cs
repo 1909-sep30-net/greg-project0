@@ -14,7 +14,7 @@ namespace Store.App
     {
         static void Main(string[] args)
         {
-            //Establish dbContext, our connection to the b=database
+            //Establish dbContext, our connection to the database
             var optionsBuilder = new DbContextOptionsBuilder<Project0Context>();
             optionsBuilder.UseSqlServer(Hidden.ConnectionString);
             var dbContext = new Project0Context(optionsBuilder.Options);
@@ -25,26 +25,35 @@ namespace Store.App
             var locContext = new DbRepo.LocationRepo(dbContext);
             var ordContext = new DbRepo.OrderRepo(dbContext);
 
-            
+            var Ellie = custContext.GetCustomerById(1001);
+            var EllieOrders = custContext.GetOrders(Ellie).ToList();
+            //Console.WriteLine(EllieOrders.Count);
+            foreach(dom.Order item in EllieOrders)
+            {
+                Console.WriteLine(item.ToString());
+            }
+
 
             //Get all of our Domain Data into usable List<>'s
-            var customers = custContext.GetCustomers(firstName:"Jim").ToList();
+            
+            List<dom.Customer> customers = custContext.GetCustomers(firstName:"Jim").ToList();
             int numberOfCustomers = customers.Count;
-            Console.WriteLine(numberOfCustomers);
+            //Console.WriteLine(numberOfCustomers);
+            
 
-            /*
+            
             var products = prodContext.GetProducts().ToList();
             int numberOfProducts = products.Count;
-            Console.WriteLine(numberOfProducts);
+            //Console.WriteLine(numberOfProducts);
 
             var locations = locContext.GetLocations().ToList();
             int numberOfLocations = locations.Count;
-            Console.WriteLine(numberOfLocations);
-
+            //Console.WriteLine(numberOfLocations);
+            
             var orders = ordContext.GetOrders().ToList();
             int numberOfOrders = orders.Count;
             Console.WriteLine(numberOfOrders);
-            */
+            
             
 
 

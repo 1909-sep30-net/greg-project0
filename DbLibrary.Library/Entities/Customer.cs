@@ -7,7 +7,7 @@ namespace DbLibrary.Library.Entities
     {
         public Customer()
         {
-            Reciept = new HashSet<Reciept>();
+            Receipt = new HashSet<Receipt>();
         }
 
         public int CustomerId { get; set; }
@@ -18,6 +18,6 @@ namespace DbLibrary.Library.Entities
         public string State { get; set; }
         public string ZipCode { get; set; }
 
-        public virtual ICollection<Reciept> Reciept { get; set; }
+        public virtual ICollection<Receipt> Receipt { get; set; }
     }
 }
