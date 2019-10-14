@@ -157,7 +157,7 @@ namespace Domains.Library
                         Console.WriteLine($"Product found, but only {item.Value} in stock. You requested {-1 * quantity}. Please try again.");
                         return false;
                     }
-                                    }
+                }
             }
             //when item is not found in inventory
             Console.WriteLine("Product not found in this Location's inventory.");

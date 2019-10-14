@@ -18,7 +18,8 @@ namespace DbLibrary.Library.Repositories
         {
             IQueryable<Entities.Product> items = _dbContext.Product
                 .Include(p => p.Basket).AsNoTracking()
-                .Include(p => p.Inventory).AsNoTracking();
+                .Include(p => p.Inventory)
+                .ThenInclude(i => i.Location);
 
             return items.Select(Mapper.MapProduct);
         }

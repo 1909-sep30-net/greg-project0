@@ -38,7 +38,16 @@ namespace DbLibrary.Library.Repositories
 
         public Entities.Customer GetCustomerById(int custEntId)
         {
-            return _dbContext.Customer.Where(i => i.CustomerId.Equals(custEntId)).FirstOrDefault();
+            return _dbContext.Customer
+                                    .Include(c => c.Receipt)
+                                    .ThenInclude(r => r.Basket)
+                                    .ThenInclude(b => b.Product)
+                                    .Include(c => c.Receipt)
+                                    .ThenInclude(r => r.Location)
+                                    .ThenInclude(l => l.Inventory)
+                                    .ThenInclude(i => i.Product)
+                                    
+                                    .Where(i => i.CustomerId.Equals(custEntId)).FirstOrDefault();
         }
 
         public void AddCustomer(dom.Customer custDom)
@@ -52,17 +61,7 @@ namespace DbLibrary.Library.Repositories
             _dbContext.Add(custEnt);
         }
 
-        public IEnumerable<dom.Order> GetOrders(Entities.Customer custEnt)
-        {
-            IEnumerable<dom.Order> result = new List<dom.Order> { };
-            Console.WriteLine(custEnt.Receipt.Count);
-            foreach( Entities.Receipt item in custEnt.Receipt)
-            {
-                result.Append(Mapper.MapOrder(item));
-            }
-
-            return result;
-        }
+        
 
         public void Save()
         {

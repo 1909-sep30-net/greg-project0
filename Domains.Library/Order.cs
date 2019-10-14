@@ -14,7 +14,7 @@ namespace Domains.Library
         /// <summary>
         /// The items on the order and the quantity of them
         /// </summary>
-        private Dictionary<Product, int> basket;//<Product object, int quantity>
+        public Dictionary<Product, int> basket;//<Product object, int quantity>
 
         /// <summary>
         /// The Customer who made the order

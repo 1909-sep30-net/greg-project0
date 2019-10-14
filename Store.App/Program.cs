@@ -25,15 +25,22 @@ namespace Store.App
             var locContext = new DbRepo.LocationRepo(dbContext);
             var ordContext = new DbRepo.OrderRepo(dbContext);
 
+
+            var EllieOrders = ordContext.GetOrders(1001).ToList();
+            foreach (dom.Order item in EllieOrders)
+            {
+                Console.WriteLine(item.OrderId);
+            };
+            /*
             var Ellie = custContext.GetCustomerById(1001);
             Console.WriteLine(Ellie.FirstName);
-            var EllieOrders = custContext.GetOrders(Ellie).ToList();
-            //Console.WriteLine(EllieOrders.Count);
+            var EllieOrders = custContext.GetOrders(101).ToList();
+            Console.WriteLine(EllieOrders.Count);
             foreach(dom.Order item in EllieOrders)
             {
-                Console.WriteLine(item.ToString());
+                Console.WriteLine(item.OrderId);
             }
-
+            
 
             /*
             //Get all of our Domain Data into usable List<>'s
@@ -55,8 +62,8 @@ namespace Store.App
             var orders = ordContext.GetOrders().ToList();
             int numberOfOrders = orders.Count;
             Console.WriteLine(numberOfOrders);
+            /*
             
-            */
 
 
         }

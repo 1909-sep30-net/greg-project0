@@ -13,10 +13,7 @@ namespace DbLibrary.Library.Entities
         public int CustomerId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Street { get; set; }
-        public string City { get; set; }
-        public string State { get; set; }
-        public string ZipCode { get; set; }
+        public string CustomerAddress { get; set; }
 
         public virtual ICollection<Receipt> Receipt { get; set; }
     }

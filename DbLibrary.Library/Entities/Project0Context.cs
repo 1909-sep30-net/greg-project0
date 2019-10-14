@@ -22,14 +22,6 @@ namespace DbLibrary.Library.Entities
         public virtual DbSet<Product> Product { get; set; }
         public virtual DbSet<Receipt> Receipt { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=tcp:revaturegregsql.database.windows.net,1433;Initial Catalog=Project0;Persist Security Info=False;User ID=gpyofavv;Password=Bobpieman2;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
-            }
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -50,7 +42,9 @@ namespace DbLibrary.Library.Entities
 
             modelBuilder.Entity<Customer>(entity =>
             {
-                entity.Property(e => e.City).HasMaxLength(50);
+                entity.Property(e => e.CustomerAddress)
+                    .IsRequired()
+                    .HasMaxLength(300);
 
                 entity.Property(e => e.FirstName)
                     .IsRequired()
@@ -59,12 +53,6 @@ namespace DbLibrary.Library.Entities
                 entity.Property(e => e.LastName)
                     .IsRequired()
                     .HasMaxLength(50);
-
-                entity.Property(e => e.State).HasMaxLength(50);
-
-                entity.Property(e => e.Street).HasMaxLength(50);
-
-                entity.Property(e => e.ZipCode).HasMaxLength(10);
             });
 
             modelBuilder.Entity<Inventory>(entity =>
@@ -84,17 +72,13 @@ namespace DbLibrary.Library.Entities
 
             modelBuilder.Entity<Location>(entity =>
             {
-                entity.Property(e => e.City).HasMaxLength(50);
+                entity.Property(e => e.LocationAddress)
+                    .IsRequired()
+                    .HasMaxLength(300);
 
                 entity.Property(e => e.LocationName)
                     .IsRequired()
                     .HasMaxLength(50);
-
-                entity.Property(e => e.State).HasMaxLength(50);
-
-                entity.Property(e => e.Street).HasMaxLength(50);
-
-                entity.Property(e => e.ZipCode).HasMaxLength(10);
             });
 
             modelBuilder.Entity<Product>(entity =>

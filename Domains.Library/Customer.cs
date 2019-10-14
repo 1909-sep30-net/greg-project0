@@ -10,6 +10,7 @@ namespace Domains.Library
         //Fields affected by Properties
         private string firstName;
         private string lastName;
+        private string address;
         private int custID;
 
         //Properties
@@ -48,6 +49,22 @@ namespace Domains.Library
             }
         }
 
+
+        public string Address
+        {
+            get { return address; }
+            //set { address = value; }
+            set
+            {
+                if (value == null || value == "")
+                    throw new ArgumentNullException("Address cannot be null or empty string.");
+                else if (value.Length > 163)//163 derived from DB 50 (Street) + 1 (space) + 50 (City) + 1 (space) + 50 (State) + 1 (space) + 10 (ZIP)
+                    throw new ArgumentOutOfRangeException("Address cannot be greater than 163 characters.");
+                else
+                    address = value;
+            }
+        }
+
         /// <summary>
         /// Returns the customer's full name, a representation of the first and last names.
         /// </summary>
@@ -76,10 +93,11 @@ namespace Domains.Library
         /// <param name="firstName">The first name of the customer.</param>
         /// <param name="lastName">The last name of the customer.</param>
         /// <param name="custID">The ID of the customer: must come from the Db!</param>
-        public Customer(string firstName, string lastName, int custID = 0)
+        public Customer(string firstName, string lastName, string address, int custID = 0)
         {
             FirstName = firstName;
             LastName = lastName;
+            Address = address;
             CustID = custID;
         }
 

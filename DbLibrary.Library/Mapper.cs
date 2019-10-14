@@ -8,7 +8,7 @@ namespace DbLibrary.Library
     {
         public static dom.Customer MapCustomer(Entities.Customer custEnt)
         {
-            return new dom.Customer(custEnt.FirstName, custEnt.LastName, custEnt.CustomerId);
+            return new dom.Customer(custEnt.FirstName, custEnt.LastName, custEnt.CustomerAddress, custEnt.CustomerId);
         }
 
 
@@ -18,7 +18,8 @@ namespace DbLibrary.Library
             {
                 CustomerId = custDom.CustID,
                 FirstName = custDom.FirstName,
-                LastName = custDom.LastName
+                LastName = custDom.LastName,
+                CustomerAddress = custDom.Address
             };
         }
 
@@ -29,8 +30,7 @@ namespace DbLibrary.Library
 
         public static dom.Location MapLocation(Entities.Location locEnt)
         {
-            string address = $"{locEnt.Street} {locEnt.City} {locEnt.State} {locEnt.ZipCode}";
-            var loc = new dom.Location(locEnt.LocationName, address, locEnt.LocationId);  
+            var loc = new dom.Location(locEnt.LocationName, locEnt.LocationAddress, locEnt.LocationId);  
             foreach(Entities.Inventory item in locEnt.Inventory)
             {
                 var prod = MapProduct(item.Product);
@@ -42,14 +42,16 @@ namespace DbLibrary.Library
         //note that Domain order = Entity receipt
         public static dom.Order MapOrder(Entities.Receipt ordEnt)
         {
-            Console.WriteLine(ordEnt.CustomerId); //prints 1000
-            var custDom = MapCustomer(ordEnt.Customer); //Customer is null, throws null exception. Not null in db, the id printing is evidence of that.
+            //Console.WriteLine(ordEnt.CustomerId); //prints 1000
+            var custDom = MapCustomer(ordEnt.Customer); 
             var locDom = MapLocation(ordEnt.Location);
             var ordDom= new dom.Order(custDom, locDom, ordEnt.ReceiptId);
             foreach(Entities.Basket item in ordEnt.Basket)
             {
                 var prodDom = MapProduct(item.Product);
-                ordDom.AddItemToBasket(prodDom, item.Quantity);
+                ordDom.basket.Add(prodDom, item.Quantity);
+                    
+                    //AddItemToBasket(prodDom, item.Quantity);
             }
             return ordDom;
         }
