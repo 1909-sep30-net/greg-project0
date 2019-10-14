@@ -26,6 +26,7 @@ namespace Store.App
             var ordContext = new DbRepo.OrderRepo(dbContext);
 
             var Ellie = custContext.GetCustomerById(1001);
+            Console.WriteLine(Ellie.FirstName);
             var EllieOrders = custContext.GetOrders(Ellie).ToList();
             //Console.WriteLine(EllieOrders.Count);
             foreach(dom.Order item in EllieOrders)
@@ -34,6 +35,7 @@ namespace Store.App
             }
 
 
+            /*
             //Get all of our Domain Data into usable List<>'s
             
             List<dom.Customer> customers = custContext.GetCustomers(firstName:"Jim").ToList();
@@ -54,7 +56,7 @@ namespace Store.App
             int numberOfOrders = orders.Count;
             Console.WriteLine(numberOfOrders);
             
-            
+            */
 
 
         }

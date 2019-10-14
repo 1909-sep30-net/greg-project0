@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,9 +19,11 @@ namespace DbLibrary.Library.Repositories
 
         public IEnumerable<dom.Customer> GetCustomers(string firstName = null, string lastName = null)
         {
-            IQueryable<Entities.Customer> items = _dbContext.Customer;
+            IQueryable<Entities.Customer> items = _dbContext.Customer
+                .Include(c => c.Receipt).AsNoTracking();
             
-            if(firstName != null)
+
+            if (firstName != null)
             {
                 items = items.Where(c => c.FirstName.Contains(firstName));
             }
@@ -52,7 +55,7 @@ namespace DbLibrary.Library.Repositories
         public IEnumerable<dom.Order> GetOrders(Entities.Customer custEnt)
         {
             IEnumerable<dom.Order> result = new List<dom.Order> { };
-            //Console.WriteLine(custEnt.Receipt.Count);
+            Console.WriteLine(custEnt.Receipt.Count);
             foreach( Entities.Receipt item in custEnt.Receipt)
             {
                 result.Append(Mapper.MapOrder(item));

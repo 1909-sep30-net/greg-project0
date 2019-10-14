@@ -11,6 +11,7 @@ namespace DbLibrary.Library
             return new dom.Customer(custEnt.FirstName, custEnt.LastName, custEnt.CustomerId);
         }
 
+
         public static Entities.Customer MapCustomer(dom.Customer custDom)
         {
             return new Entities.Customer
@@ -42,7 +43,7 @@ namespace DbLibrary.Library
         public static dom.Order MapOrder(Entities.Receipt ordEnt)
         {
             Console.WriteLine(ordEnt.CustomerId); //prints 1000
-            var custDom = MapCustomer(ordEnt.Customer);
+            var custDom = MapCustomer(ordEnt.Customer); //Customer is null, throws null exception. Not null in db, the id printing is evidence of that.
             var locDom = MapLocation(ordEnt.Location);
             var ordDom= new dom.Order(custDom, locDom, ordEnt.ReceiptId);
             foreach(Entities.Basket item in ordEnt.Basket)

@@ -1,3 +1,10 @@
+DROP TABLE Basket
+DROP TABLE Inventory
+DROP TABLE Customer
+DROP TABLE Product
+DROP TABLE Location
+DROP TABLE Receipt
+
 --Create Customer Table
 GO
 CREATE TABLE Customer

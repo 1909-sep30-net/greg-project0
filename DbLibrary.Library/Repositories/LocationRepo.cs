@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,9 @@ namespace DbLibrary.Library.Repositories
 
         public IEnumerable<dom.Location> GetLocations()
         {
-            IQueryable<Entities.Location> items = _dbContext.Location;
+            IQueryable<Entities.Location> items = _dbContext.Location
+                .Include(l => l.Inventory).AsNoTracking()
+                .Include(l => l.Receipt).AsNoTracking();
             
             return items.Select(Mapper.MapLocation);
         }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using dom = Domains.Library;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace DbLibrary.Library.Repositories
 {
@@ -16,8 +16,11 @@ namespace DbLibrary.Library.Repositories
 
         public IEnumerable<dom.Order> GetOrders()
         {
-            IQueryable<Entities.Receipt> items = _dbContext.Receipt;
-            Console.WriteLine(items.Count());
+            IQueryable<Entities.Receipt> items = _dbContext.Receipt
+                .Include(r => r.Customer).AsNoTracking()
+                .Include(r => r.Location).AsNoTracking()
+                .Include(r => r.Basket).AsNoTracking();
+
             return items.Select(Mapper.MapOrder);
         }
     }

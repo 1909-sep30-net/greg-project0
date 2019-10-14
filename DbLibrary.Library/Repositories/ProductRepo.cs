@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using dom = Domains.Library;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace DbLibrary.Library.Repositories
 {
@@ -16,7 +16,9 @@ namespace DbLibrary.Library.Repositories
 
         public IEnumerable<dom.Product> GetProducts()
         {
-            IQueryable<Entities.Product> items = _dbContext.Product;
+            IQueryable<Entities.Product> items = _dbContext.Product
+                .Include(p => p.Basket).AsNoTracking()
+                .Include(p => p.Inventory).AsNoTracking();
 
             return items.Select(Mapper.MapProduct);
         }
