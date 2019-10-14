@@ -25,27 +25,27 @@ namespace Store.App
             var locContext = new DbRepo.LocationRepo(dbContext);
             var ordContext = new DbRepo.OrderRepo(dbContext);
 
-
-            var EllieOrders = ordContext.GetOrders(1001).ToList();
-            foreach (dom.Order item in EllieOrders)
-            {
-                Console.WriteLine(item.OrderId);
-            };
-            /*
-            var Ellie = custContext.GetCustomerById(1001);
-            Console.WriteLine(Ellie.FirstName);
-            var EllieOrders = custContext.GetOrders(101).ToList();
-            Console.WriteLine(EllieOrders.Count);
-            foreach(dom.Order item in EllieOrders)
-            {
-                Console.WriteLine(item.OrderId);
-            }
             
 
+
+
+
+        }
+
+        private void Notes()
+        {
+            //Add a domain customer to the database
             /*
+            var domTestCustomer = new dom.Customer(firstName:"Bill", lastName:"Hernandez");
+            custContext.AddCustomer(domTestCustomer);
+            custContext.Save();
+            */
+
+
+
             //Get all of our Domain Data into usable List<>'s
-            
-            List<dom.Customer> customers = custContext.GetCustomers(firstName:"Jim").ToList();
+            /*
+            var customers = custContext.GetCustomers(firstName:"Jim").ToList();
             int numberOfCustomers = customers.Count;
             //Console.WriteLine(numberOfCustomers);
             
@@ -62,19 +62,31 @@ namespace Store.App
             var orders = ordContext.GetOrders().ToList();
             int numberOfOrders = orders.Count;
             Console.WriteLine(numberOfOrders);
+            */
+
+            //Get all orders over all, for a customer (by customerId), and from a location (by locationid)
             /*
-            
+            var AllOrders = ordContext.GetOrders().ToList();
+            foreach (dom.Order item in AllOrders)
+            {
+                Console.WriteLine(item.OrderId);
+            };
 
+            Console.WriteLine();
 
-        }
+            var EllieOrders = ordContext.GetOrdersByCustomer(1001).ToList();
+            foreach (dom.Order item in EllieOrders)
+            {
+                Console.WriteLine(item.OrderId);
+            };
 
-        private void Notes()
-        {
-            //Add a domain customer to the database
-            /*
-            var domTestCustomer = new dom.Customer(firstName:"Bill", lastName:"Hernandez");
-            custContext.AddCustomer(domTestCustomer);
-            custContext.Save();
+            Console.WriteLine();
+
+            var TexasOrders = ordContext.GetOrdersByLocation(1000).ToList();
+            foreach (dom.Order item in TexasOrders)
+            {
+                Console.WriteLine(item.OrderId);
+            };
             */
         }
     }

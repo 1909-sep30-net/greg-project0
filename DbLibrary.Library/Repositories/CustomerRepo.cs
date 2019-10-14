@@ -36,20 +36,7 @@ namespace DbLibrary.Library.Repositories
             return items.Select(Mapper.MapCustomer);
         }
 
-        public Entities.Customer GetCustomerById(int custEntId)
-        {
-            return _dbContext.Customer
-                                    .Include(c => c.Receipt)
-                                    .ThenInclude(r => r.Basket)
-                                    .ThenInclude(b => b.Product)
-                                    .Include(c => c.Receipt)
-                                    .ThenInclude(r => r.Location)
-                                    .ThenInclude(l => l.Inventory)
-                                    .ThenInclude(i => i.Product)
-                                    
-                                    .Where(i => i.CustomerId.Equals(custEntId)).FirstOrDefault();
-        }
-
+        
         public void AddCustomer(dom.Customer custDom)
         {
             if(custDom.CustID != 0)

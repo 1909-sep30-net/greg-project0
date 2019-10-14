@@ -16,27 +16,37 @@ namespace DbLibrary.Library.Repositories
 
         public IEnumerable<dom.Order> GetOrders(int custId = -1)
         {
-            IQueryable<Entities.Receipt> items = null;
-            if (custId == -1)
-            {
-                items = _dbContext.Receipt
+            IQueryable<Entities.Receipt> items = _dbContext.Receipt
                     .Include(r => r.Customer).AsNoTracking()
                     .Include(r => r.Location).AsNoTracking()
                     .Include(r => r.Basket)
                         .ThenInclude(basket => basket.Product);
-            }
-            else
-            {
-                items = _dbContext.Receipt
+            
+            return items.Select(Mapper.MapOrder);
+        }
+
+        public IEnumerable<dom.Order> GetOrdersByCustomer(int custId )
+        {
+            IQueryable<Entities.Receipt> items = _dbContext.Receipt
                     .Include(r => r.Customer).AsNoTracking()
                     .Include(r => r.Location).AsNoTracking()
                     .Include(r => r.Basket)
                      .ThenInclude(basket => basket.Product)
                     .Where(r => r.CustomerId == custId);
-            }
+            
             return items.Select(Mapper.MapOrder);
         }
 
-
+        public IEnumerable<dom.Order> GetOrdersByLocation(int locId)
+        {
+            IQueryable<Entities.Receipt> items = _dbContext.Receipt
+                    .Include(r => r.Customer).AsNoTracking()
+                    .Include(r => r.Location).AsNoTracking()
+                    .Include(r => r.Basket)
+                     .ThenInclude(basket => basket.Product)
+                    .Where(r => r.LocationId == locId);
+            
+            return items.Select(Mapper.MapOrder);
+        }
     }
 }
