@@ -25,11 +25,20 @@ namespace Store.App
             var locContext = new DbRepo.LocationRepo(dbContext);
             var ordContext = new DbRepo.OrderRepo(dbContext);
 
-            
+            var cust = custContext.GetCustomers(firstName: "Greg").First();
+            var prod = prodContext.GetProducts(3).First();
+            var loc = locContext.GetLocations(2).First();
 
+            var ord = new dom.Order(cust, loc, 4);
+            ord.basket.Add(prod, 1);
+            //ordContext.AddOrder(ord);
+            //ordContext.Save();
 
-
-
+            var newOrd = ordContext.GetOrdersByCustomer(1).Last();
+            var dbId = newOrd.OrderId;
+            Console.WriteLine(dbId);
+            ordContext.AddBasket(ord, dbId);
+            ordContext.Save();
         }
 
         private void Notes()

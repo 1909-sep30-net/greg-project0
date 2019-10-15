@@ -71,7 +71,7 @@ namespace DbLibrary.Library
             var list = new List<Entities.Basket> { };
             foreach(KeyValuePair<dom.Product, int> item in ordDom.basket)
             {
-                list.Add(new Entities.Basket { ProductId = item.Key.ProductID, Quantity = item.Value });
+                list.Add(new Entities.Basket { ProductId = item.Key.ProductID, Quantity = item.Value, ReceiptId = dbId });
             }
             return list;
         }

@@ -22,7 +22,7 @@ namespace DbLibrary.Library.Repositories
                 Console.WriteLine($"Order ID is set to {ordDom.OrderId}, which will be ignored.");
             }
             Entities.Receipt ordEnt = Mapper.MapOrder(ordDom);
-            ordEnt.CustomerId = 0;
+            ordEnt.ReceiptId = 0;
             _dbContext.Add(ordEnt);
             //Don't forget to save!
         }
@@ -32,8 +32,10 @@ namespace DbLibrary.Library.Repositories
             foreach(Entities.Basket item in basket)
             {
                 _dbContext.Add(item);
+                Console.WriteLine("Added item " + item.ProductId);
+                
             }
-            //Don't forget to save!
+
         }
 
 

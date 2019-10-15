@@ -56,9 +56,7 @@ namespace Domains.Library
             get { return orderId; }
             set
             {
-                if (value < 100000 || value >= 200000)
-                    throw new ArgumentOutOfRangeException("Order Id # must be 100000 <= # < 200000");
-                else
+                
                     orderId = value;
             }
         }

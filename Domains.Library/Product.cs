@@ -56,9 +56,7 @@ namespace Domains.Library
             get { return productID; }
             set
             {
-                if (value < 1000 || value >= 2000)
-                    throw new ArgumentOutOfRangeException("Product Id # must be 1000 <= # < 2000");
-                else
+                
                     productID = value;
             }
         }

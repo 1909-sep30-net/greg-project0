@@ -60,9 +60,7 @@ namespace Domains.Library
         {
             get { return storeID; }
             set{
-                if (value < 1000 || value >= 2000)
-                    throw new ArgumentOutOfRangeException("Store/Location Id # must be 1000 <= # < 2000");
-                else
+                
                     storeID = value;
             }
         }

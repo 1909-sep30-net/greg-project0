@@ -18,7 +18,8 @@ namespace DbLibrary.Library.Repositories
         public IEnumerable<dom.Location> GetLocations(int locId = -1)
         {
             IQueryable<Entities.Location> items = _dbContext.Location
-                .Include(l => l.Inventory).AsNoTracking()
+                .Include(l => l.Inventory)
+                .ThenInclude(i => i.Product)
                 .Include(l => l.Receipt).AsNoTracking();
 
             if (locId != -1)
