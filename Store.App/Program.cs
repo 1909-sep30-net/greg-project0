@@ -37,7 +37,7 @@ namespace Store.App
                 Console.WriteLine();
 
                 Console.WriteLine("1:\tAdd a customer");
-                Console.WriteLine("2:\tPerform Searches");
+                Console.WriteLine("2:\tPerform Searches and Displays");
                 Console.WriteLine("3:\tPlace an order");
                 Console.WriteLine("4:\tQuit");
                 Console.WriteLine();
@@ -99,7 +99,92 @@ namespace Store.App
                 }
                 else if (input == "2")
                 {
+                    while (true)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Search and Display Menu\n");
 
+                        Console.WriteLine("1:\tSearch and Display Customers by Name");
+                        Console.WriteLine("2:\tDisplay all Orders for a Customer");
+                        Console.WriteLine("3:\tDisplay all Orders for a Location");
+                        Console.WriteLine("4:\tDisplay Details of an Order");
+                        Console.WriteLine("5:\tLeave Menu");
+                        Console.WriteLine();
+
+                        Console.Write("Enter a valid menu option: ");
+                        var inputMenu2 = Console.ReadLine();
+                        if(inputMenu2 == "1")
+                        {
+                            string firstNameSearch = null;
+                            string lastNameSearch = null;
+
+                            Console.Clear();
+                            Console.WriteLine("Search and Display Customers by Name\n");
+
+                            Console.WriteLine("Enter a First Name to search:");
+                            Console.Write("\t(or leave empty): ");
+                            firstNameSearch = Console.ReadLine();
+                            if (firstNameSearch == "")
+                                firstNameSearch = null;
+
+                            Console.WriteLine("Enter a Last Name to search:");
+                            Console.Write("\t(or leave empty): ");
+                            lastNameSearch = Console.ReadLine();
+                            if (lastNameSearch == "")
+                                lastNameSearch = null;
+
+                            Console.WriteLine($"\nSearching for Customers with\n\tFirst Name: {firstNameSearch}\n\tLast Name: {lastNameSearch}\n\nResults:");
+
+                            var customersSearched = custContext.GetCustomers(firstNameSearch, lastNameSearch).ToList();
+                            foreach(dom.Customer cust in customersSearched)
+                            {
+                                Console.WriteLine(cust.ToString() + "\n");
+                            }
+
+                            Console.WriteLine("Press any key to continue.");
+                            Console.ReadKey();
+                        }
+                        else if(inputMenu2 == "2")
+                        {
+                            string inputMenu2Entry;
+                            int custId = 0;
+                            bool isInt = false;
+                            do
+                            {
+                                Console.Clear();
+                                Console.WriteLine("Display All Orders for a Customer\n");
+
+                                Console.Write("Enter a Customer ID: ");
+                                inputMenu2Entry = Console.ReadLine();
+                                isInt = Int32.TryParse(inputMenu2Entry, out custId);
+                            }
+                            while (!isInt);
+
+                            var results = ordContext.GetOrdersByCustomer(custId).ToList();
+                            if (results.Count > 0)
+                            {
+                                foreach (dom.Order ord in results)
+                                {
+                                    Console.WriteLine(ord.ToString() + "\n");
+                                }
+                            }
+                            else
+                                Console.WriteLine($"No results matching CustomerID {custId}");
+                        }
+                        else if (inputMenu2 == "3")
+                        {
+
+                        }
+                        else if (inputMenu2 == "4")
+                        {
+
+                        }
+                        else if (inputMenu2 == "5")
+                        {
+
+                        }
+
+                    }
                 }
                 else if (input == "3")
                 {
