@@ -18,7 +18,7 @@ namespace Domains.Library
         public Dictionary<Product, int> inventory;
 
         /// <summary>
-        /// The store's name. Cannot be null, empty, or longer than 50 characters.
+        /// The store's name. Cannot be null or empty.
         /// </summary>
         public string StoreName
         {
@@ -28,15 +28,13 @@ namespace Domains.Library
             {
                 if (value == null || value == "")
                     throw new ArgumentNullException("Store/Location name cannot be null or empty string.");
-                else if (value.Length > 50)
-                    throw new ArgumentOutOfRangeException("Store/Location name cannot be greater than 50 characters.");
                 else
                     storeName = value;
             }
         }
 
         /// <summary>
-        /// The store's address name. Cannot be null, empty, or longer than 163 characters.
+        /// The store's address name. Cannot be null or empty.
         /// </summary>
         public string Address
         {
@@ -46,27 +44,24 @@ namespace Domains.Library
             {
                 if (value == null || value == "")
                     throw new ArgumentNullException("Address cannot be null or empty string.");
-                else if (value.Length > 163)//163 derived from DB 50 (Street) + 1 (space) + 50 (City) + 1 (space) + 50 (State) + 1 (space) + 10 (ZIP)
-                    throw new ArgumentOutOfRangeException("Address cannot be greater than 163 characters.");
                 else
                     address = value;
             }
         }
 
         /// <summary>
-        /// The Store's ID, should only be set by db!!!
+        /// The Store's ID. Should only be trusted if this Location was mapped over from a database entity.
         /// </summary>
         public int StoreID
         {
             get { return storeID; }
-            set{
-                
+            set {
                     storeID = value;
-            }
+                }
         }
 
         /// <summary>
-        /// The sotre's inventory
+        /// The location's inventory
         /// </summary>
         public Dictionary<Product, int> Inventory
         {
@@ -78,7 +73,7 @@ namespace Domains.Library
         /// </summary>
         /// <param name="name">The store's name</param>
         /// <param name="address">The Store's address</param>
-        /// <param name="storeId">The Store's Id - should be set by db!</param>
+        /// <param name="storeId">The Store's Id - Only trusted if this Location was mapped over from a database entity.</param>
         public Location(string name, string address, int storeId)
         {
             StoreName = name;
@@ -89,7 +84,12 @@ namespace Domains.Library
         }
 
         
-        //adds a new product to inventory
+        /// <summary>
+        /// Adds a new product and quantity to this location's inventory
+        /// </summary>
+        /// <param name="newItem">A Product</param>
+        /// <param name="quantity">The amount of the Product to add</param>
+        /// <returns>If item is not null and is new to the inventory, true. Else, false.</returns>
         public bool AddNewItem(Product newItem, int quantity)
         {
             if (newItem == null)
@@ -110,22 +110,25 @@ namespace Domains.Library
                 Console.WriteLine("The item you are trying to add already exists in the inventory. Try adjusting quantity instead.");
                 return false;
             }
-            else
+            else//Success Case
             {
                 inventory.Add(newItem, quantity);
                 return true;
             }
         }
 
-        //return true if successfully found item
-        //out Product product is the matched product if true, or null if false.
-
-        public bool FindItemByName(string name, out Product product)
+        /// <summary>
+        /// Attempts to find an item by id in the inventory.
+        /// </summary>
+        /// <param name="id">The id of the item to find</param>
+        /// <param name="product">OUT: The product, if found. Else, null</param>
+        /// <returns>If the item is found, true. Else, false.</returns>
+        public bool FindItemByName(int id, out Product product)
         {
             //loops through inventory comparing product until found
             foreach (KeyValuePair<Product, int> item in inventory)
             {
-                if (item.Key.ProductName == name)
+                if (item.Value == id)
                 {
                     product = item.Key;
                     return true;
@@ -136,9 +139,12 @@ namespace Domains.Library
             return false;
         }
 
-        //adjusts the quanity of a product in the inventory
-        //increase if quantity is positive, decrease if quantity is negative
-        //returns true if successful
+        /// <summary>
+        /// Adjust the quantity of a product in the inventory.
+        /// </summary>
+        /// <param name="product">The product in the inventory</param>
+        /// <param name="quantity">The amount to add( or subtract) to the quantity.</param>
+        /// <returns>If product is found and adjustment to quantity is resonable, true. Else, false.</returns>
         public bool AdjustQuantity(Product product, int quantity)
         {
             foreach (KeyValuePair<Product, int> item in inventory)
@@ -152,7 +158,7 @@ namespace Domains.Library
                     }
                     else
                     {
-                        Console.WriteLine($"Product found, but only {item.Value} in stock. You requested {-1 * quantity}. Please try again.");
+                        Console.WriteLine($"Product found, but only {item.Value} in stock. You requested tried to decrease the quantity by {-1 * quantity}. Please try again.");
                         return false;
                     }
                 }
@@ -162,26 +168,28 @@ namespace Domains.Library
             return false;
         }
 
-
-        //Will be implemented after Order.cs is implemented
-        public bool ProcessOrder(Order order)
-        {
-            return false;
-        }
-
+        /// <summary>
+        /// A formatted representation of the products and quantities in this location's inventory
+        /// </summary>
+        /// <returns> A formatted representation of the products and quantities in this location's inventory</returns>
         public string InventoryToString()
         {
             string str = "";
             foreach (KeyValuePair<Product, int> item in inventory)
             {
-                str += $"Quantity = {item.Value} >> {item.Key.ToString()}\n";//\n in Product ToString method
+                str += $"\n{item.Key.ToString()} \n\t\tQuantity: {item.Value}";
             }
             return str;
         }
 
+        /// <summary>
+        /// Overrides the base ToString()
+        /// A formatted respresentation of this Location
+        /// </summary>
+        /// <returns>A formatted respresentation of this Location</returns>
         public override string ToString()
         {
-            return $"ID : {StoreID},  NAME: {StoreName},  ADDRESS: {Address} ";
+            return $"\tID : {StoreID} \t\nNAME: {StoreName} \t\nADDRESS: {Address}";
         }
 
 

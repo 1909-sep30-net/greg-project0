@@ -15,7 +15,7 @@ namespace Domains.Library
 
         //Properties
         /// <summary>
-        /// The customer's first name. Cannot be null, empty, or longer than 50 characters.
+        /// The customer's first name. Cannot be null or empty.
         /// </summary>
         public string FirstName
         {
@@ -24,42 +24,36 @@ namespace Domains.Library
             {
                 if (value == null || value == "")
                     throw new ArgumentNullException("Customer name cannot be null or empty string.");
-                else if (value.Length > 50)
-                    throw new ArgumentOutOfRangeException("Customer First Name cannot be greater than 50 characters.");
                 else
                     firstName = value;
             }
         }
 
         /// <summary>
-        /// The customer's last name.  Cannot be null, empty, or longer than 50 characters.
+        /// The customer's last name.  Cannot be null or empty.
         /// </summary>
         public string LastName
         {
             get { return lastName; }
-            //set { lastName = value; }
             set
             {
                 if (value == null || value == "")
                     throw new ArgumentNullException("Customer Last name cannot be null or empty string.");
-                else if (value.Length > 50)
-                    throw new ArgumentOutOfRangeException("Customer Last Name cannot be greater than 50 characters.");
                 else
                     lastName = value;
             }
         }
 
-
+        /// <summary>
+        /// The customer's address in one long string. Cannot be null or empty.
+        /// </summary>
         public string Address
         {
             get { return address; }
-            //set { address = value; }
             set
             {
                 if (value == null || value == "")
                     throw new ArgumentNullException("Address cannot be null or empty string.");
-                else if (value.Length > 163)//163 derived from DB 50 (Street) + 1 (space) + 50 (City) + 1 (space) + 50 (State) + 1 (space) + 10 (ZIP)
-                    throw new ArgumentOutOfRangeException("Address cannot be greater than 163 characters.");
                 else
                     address = value;
             }
@@ -74,7 +68,7 @@ namespace Domains.Library
         }
 
         /// <summary>
-        /// Returns the customer's id.
+        /// The customer's id. Should only be trusted if this customer was mapped from a database entity.
         /// </summary>
         public int CustID
         {
@@ -92,7 +86,7 @@ namespace Domains.Library
         /// </summary>
         /// <param name="firstName">The first name of the customer.</param>
         /// <param name="lastName">The last name of the customer.</param>
-        /// <param name="custID">The ID of the customer: must come from the Db!</param>
+        /// <param name="custID">The ID of the customer: only useful if this Customer was mapped over from a Database entity.</param>
         public Customer(string firstName, string lastName, string address, int custID = 0)
         {
             FirstName = firstName;
@@ -101,9 +95,14 @@ namespace Domains.Library
             CustID = custID;
         }
 
+        /// <summary>
+        /// Overrides the base ToString
+        /// Prints out Customer in an organized format.
+        /// </summary>
+        /// <returns>A formatted string with Customer info</returns>
         public override string ToString()
         {
-            return $"ID:{CustID},  FIRST NAME: {FirstName},  LAST NAME: {LastName}";
+            return $"\tID:{CustID} \n\tFIRST NAME: {FirstName} \n\tLAST NAME: {LastName} \n\tAddress: {Address}";
         }
 
 

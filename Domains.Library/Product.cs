@@ -15,7 +15,7 @@ namespace Domains.Library
 
 
         /// <summary>
-        /// The product name. Cannot be null, empty, or longer than 50 characters.
+        /// The product name. Cannot be null or empty.
         /// </summary>
         public string ProductName
         {
@@ -25,15 +25,13 @@ namespace Domains.Library
             {
                 if (value == null || value == "")
                     throw new ArgumentNullException("Product name cannot be null or empty string.");
-                else if (value.Length > 50)
-                    throw new ArgumentOutOfRangeException("Product First Name cannot be greater than 50 characters.");
                 else
                     productName = value;
             }
         }
 
         /// <summary>
-        /// The product description. Cannot be null, empty, or longer than 200 characters.
+        /// The product description. Cannot be longer than 200 characters.
         /// </summary>
         public string ProductDescription
         {
@@ -42,21 +40,20 @@ namespace Domains.Library
             set
             {
                 if (value.Length > 200)
-                    throw new ArgumentOutOfRangeException("Description cannot be greater than 200 characters.");
+                    throw new ArgumentException("Description cannot be greater than 200 characters.");
                 else
                     productName = value;
             }
         }
 
         /// <summary>
-        /// The product id. Must be bewteen 1 and 1000, inclusive.
+        /// The product id. Should only be trusted if this Location was mapped over from a database entity.
         /// </summary>
         public int ProductID
         {
             get { return productID; }
             set
             {
-                
                     productID = value;
             }
         }
@@ -66,7 +63,7 @@ namespace Domains.Library
         /// </summary>
         /// <param name="name">The Product name</param>
         /// <param name="description">The product description</param>
-        /// <param name="productId">The product Id, needs to be set by db!</param>
+        /// <param name="productId">The product Id, should only be trusted if this Location was mapped over from a database entity.</param>
         public Product(string name, string description, int productId)
         {
             ProductName = name;
@@ -75,9 +72,17 @@ namespace Domains.Library
                         
         }
 
+        /// <summary>
+        /// Overrides the base ToString()
+        /// A formatted respresentation of this Product
+        /// </summary>
+        /// <returns>A formatted respresentation of this Product</returns>
         public override string ToString()
         {
-            return $"ID: {this.ProductID},  NAME: {this.ProductName}, DESCRIPTION: {this.ProductDescription}";
+            string str = $"\nID: {this.ProductID} \n\tNAME: {this.ProductName}";
+            if (this.ProductDescription != null)
+                str += $"\n\tDESCRIPTION: { this.ProductDescription}";
+            return str;
         }
     }
 }
