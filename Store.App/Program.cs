@@ -19,26 +19,97 @@ namespace Store.App
             optionsBuilder.UseSqlServer(Hidden.ConnectionString);
             var dbContext = new Project0Context(optionsBuilder.Options);
 
+            RunUI(dbContext);
+        }
+
+        public static void RunUI(Project0Context dbContext)
+        {
             //Establish contexts to the four domains
             var custContext = new DbRepo.CustomerRepo(dbContext);
             var prodContext = new DbRepo.ProductRepo(dbContext);
             var locContext = new DbRepo.LocationRepo(dbContext);
             var ordContext = new DbRepo.OrderRepo(dbContext);
 
-            var cust = custContext.GetCustomers(firstName: "Greg").First();
-            var prod = prodContext.GetProducts(3).First();
-            var loc = locContext.GetLocations(2).First();
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("StoreManager\n");
+                Console.WriteLine();
 
-            var ord = new dom.Order(cust, loc, 4);
-            ord.basket.Add(prod, 1);
-            //ordContext.AddOrder(ord);
-            //ordContext.Save();
+                Console.WriteLine("1:\tAdd a customer");
+                Console.WriteLine("2:\tPerform Searches");
+                Console.WriteLine("3:\tPlace an order");
+                Console.WriteLine("4:\tQuit");
+                Console.WriteLine();
+                Console.Write("Enter a valid menu option: ");
+                var input = Console.ReadLine();
+                if(input == "1")
+                {
+                    string firstName = null;
+                    string lastName = null;
+                    string address = null;
 
-            var newOrd = ordContext.GetOrdersByCustomer(1).Last();
-            var dbId = newOrd.OrderId;
-            Console.WriteLine(dbId);
-            ordContext.AddBasket(ord, dbId);
-            ordContext.Save();
+                    Console.Clear();
+                    Console.WriteLine("Add a customer menu\n");
+                    
+                    while(firstName == null)
+                    {
+                        Console.Write("Enter a first name: ");
+                        firstName = Console.ReadLine();
+                        if(firstName == "")
+                        {
+                            firstName = null;
+                        }
+                    }
+                    while (lastName == null)
+                    {
+                        Console.Write("Enter a last name: ");
+                        lastName = Console.ReadLine();
+                        if (lastName == "")
+                        {
+                            lastName = null;
+                        }
+                    }
+                    while (address == null)
+                    {
+                        Console.Write("Enter an address: ");
+                        address = Console.ReadLine();
+                        if (address == "")
+                        {
+                            address = null;
+                        }
+                    }
+                    Console.WriteLine($"Creating a new customer with:\nFirst Name:  {firstName}\nLast Name:  {lastName}\nAddress:  {address}");
+
+                    try 
+                    { 
+                        var newCustomer = new dom.Customer(firstName, lastName, address);
+                        custContext.AddCustomer(newCustomer);
+                        custContext.Save();
+                        var dbCustomerId = custContext.GetCustomers(firstName, lastName).Last().CustID;
+                        Console.WriteLine($"The customer has been successfully added.\nID:\t{dbCustomerId}\n");
+
+                        Console.WriteLine("Press any key to continue.");
+                        Console.ReadKey();
+                    }
+                    catch (ArgumentNullException ex) 
+                    { 
+                        Console.WriteLine(ex); 
+                    }
+                }
+                else if (input == "2")
+                {
+
+                }
+                else if (input == "3")
+                {
+
+                }
+                else if (input == "4")
+                {
+
+                }
+            }
         }
 
         private void Notes()
@@ -96,6 +167,25 @@ namespace Store.App
             {
                 Console.WriteLine(item.OrderId);
             };
+            */
+
+
+            //Add an order to the database
+            /*
+            var cust = custContext.GetCustomers(firstName: "Greg").First();
+            var prod = prodContext.GetProducts(3).First();
+            var loc = locContext.GetLocations(2).First();
+
+            var ord = new dom.Order(cust, loc, 4);
+            ord.basket.Add(prod, 1);
+            //ordContext.AddOrder(ord);
+            //ordContext.Save();
+
+            var newOrd = ordContext.GetOrdersByCustomer(1).Last();
+            var dbId = newOrd.OrderId;
+            Console.WriteLine(dbId);
+            ordContext.AddBasket(ord, dbId);
+            ordContext.Save();
             */
         }
     }
