@@ -44,11 +44,10 @@ namespace DbLibrary.Library.Repositories
         /// <summary>
         /// Map and add the items in a Domain Order's basket to the database.
         /// </summary>
-        /// <param name="ordDom">A domain Order</param>
         /// <param name="dbId">The ID of the Domain Order's Entity Reciept counterpart in the database.</param>
-        public void AddBasket(dom.Order ordDom, int dbId)
+        public void AddBasket(dom.Order ordDom)
         {
-            var basket = Mapper.MapBasket(ordDom, dbId);
+            var basket = Mapper.MapBasket(ordDom, ordDom.OrderId);
             foreach(Entities.Basket item in basket)
             {
                 _dbContext.Add(item);                
