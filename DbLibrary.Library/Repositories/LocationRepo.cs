@@ -8,13 +8,29 @@ using dom = Domains.Library;
 
 namespace DbLibrary.Library.Repositories
 {
+    /// <summary>
+    /// A Repository of Functions revolving around Domain Locations and Entity Locations and Entity Inventories.
+    /// </summary>
     public class LocationRepo
     {
+        /// <summary>
+        /// The Context of the database
+        /// </summary>
         private readonly Entities.Project0Context _dbContext;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="dbContext">The Database Context</param>
         public LocationRepo(Entities.Project0Context dbContext) =>
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
 
+        /// <summary>
+        /// Gets a list of Domain Locations
+        /// Can be filtered by LocationId
+        /// </summary>
+        /// <param name="locId">A LocationId to filter by</param>
+        /// <returns>A List of Domain Locations</returns>
         public IEnumerable<dom.Location> GetLocations(int locId = -1)
         {
             IQueryable<Entities.Location> items = _dbContext.Location
@@ -26,6 +42,14 @@ namespace DbLibrary.Library.Repositories
                 items = items.Where(l => l.LocationId == locId);
             
             return items.Select(Mapper.MapLocation);
+        }
+
+        /// <summary>
+        /// Commits and saves changes to the Database
+        /// </summary>
+        public void Save()
+        {
+            _dbContext.SaveChanges();
         }
     }
 }
