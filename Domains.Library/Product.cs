@@ -11,6 +11,7 @@ namespace Domains.Library
         //fields affected by properties
         private string productName;
         private string productDescription;
+        private decimal cost;
         private int productID;
 
 
@@ -58,16 +59,22 @@ namespace Domains.Library
         }
 
         /// <summary>
+        /// The cost of the product.
+        /// </summary>
+        public decimal Cost { get; set; }
+
+        /// <summary>
         /// Constructor of a new Product
         /// </summary>
         /// <param name="name">The Product name</param>
         /// <param name="description">The product description</param>
         /// <param name="productId">The product Id, should only be trusted if this Location was mapped over from a database entity.</param>
-        public Product(string name, string description, int productId)
+        public Product(string name, string description, int productId, decimal cost)
         {
             ProductName = name;
             ProductDescription = description;
             ProductID = productId;
+            Cost = cost;
                         
         }
 
@@ -78,7 +85,7 @@ namespace Domains.Library
         /// <returns>A formatted respresentation of this Product</returns>
         public override string ToString()
         {
-            string str = $"\nProductID: {this.ProductID} \n\tNAME: {this.ProductName}";
+            string str = $"\nProductID: {this.ProductID} \n\tNAME: {this.ProductName} \n\tCost:{Math.Round(this.Cost,2)}";
             if (this.ProductDescription != null)
                 str += $"\n\tDESCRIPTION: { this.ProductDescription}";
             return str;

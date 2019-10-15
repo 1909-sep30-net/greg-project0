@@ -45,7 +45,7 @@ namespace DbLibrary.Library
         /// <returns>A Domain Product</returns>
         public static dom.Product MapProduct(Entities.Product prodEnt)
         {
-            return new dom.Product(prodEnt.ProductName, prodEnt.ProductDescription, prodEnt.ProductId);
+            return new dom.Product(prodEnt.ProductName, prodEnt.ProductDescription, prodEnt.ProductId, prodEnt.UnitCost);
         }
 
         /// <summary>

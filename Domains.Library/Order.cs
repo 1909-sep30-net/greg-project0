@@ -72,6 +72,16 @@ namespace Domains.Library
             basket = new Dictionary<Product, int>() { };//initialize an empty basket
         }
 
+        public decimal CalculateCostOfBasket()
+        {
+            decimal total = 0m;
+            foreach(KeyValuePair<Product, int> item in basket)
+            {
+                total += item.Key.Cost * item.Value;
+            }
+            return Math.Round(total, 2);
+        }
+
         /// <summary>
         /// A formatted representation of the products and quantities in this order's basket
         /// </summary>
@@ -94,7 +104,8 @@ namespace Domains.Library
         /// <returns>A formatted respresentation of this Order</returns>
         public override string ToString()
         {
-            return $"\nOrder ID: {this.OrderId} \n\tCustomer ID: {this.OrderCustomer.CustID}\tCustomer Name: {this.OrderCustomer.FullName}\n\tLocation ID: {this.OrderLocation.StoreID}\tLocation Name: {this.OrderLocation.StoreName}";
+            return $"\nOrder ID: {this.OrderId} \n\tCustomer ID: {this.OrderCustomer.CustID}\tCustomer Name: {this.OrderCustomer.FullName}" +
+                $"\n\tLocation ID: {this.OrderLocation.StoreID}\tLocation Name: {this.OrderLocation.StoreName}\n\tTotal Cost: {this.CalculateCostOfBasket()}";
         }
 
 

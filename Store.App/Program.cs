@@ -383,7 +383,10 @@ namespace Store.App
                         ordContext.AddBasket(ord);
                         ordContext.Save();
 
-                        Console.WriteLine($"Order {ord.OrderId} Complete.");
+                        Console.Clear();
+                        Console.WriteLine($"Order Complete.\n");
+                        Console.WriteLine(ord.ToString());
+                        Console.WriteLine(ord.BasketToString());
                     }
                     catch(ArgumentNullException ex)
                     {
