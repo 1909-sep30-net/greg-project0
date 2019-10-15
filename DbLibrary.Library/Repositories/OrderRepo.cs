@@ -74,6 +74,23 @@ namespace DbLibrary.Library.Repositories
         }
 
         /// <summary>
+        /// Get a list of Domain Orders, filtered by orderId
+        /// </summary>
+        /// <param name="ordId">An Order Id</param>
+        /// <returns>A list of Domain Orders</returns>
+        public IEnumerable<dom.Order> GetOrderByOrderId(int ordId)
+        {
+            IQueryable<Entities.Receipt> items = _dbContext.Receipt
+                    .Include(r => r.Customer).AsNoTracking()
+                    .Include(r => r.Location).AsNoTracking()
+                    .Include(r => r.Basket)
+                        .ThenInclude(basket => basket.Product)
+                    .Where(r => r.ReceiptId == ordId);
+
+            return items.Select(Mapper.MapOrder);
+        }
+
+        /// <summary>
         /// Get a list of Domain Orders, filtered by a customerId
         /// </summary>
         /// <param name="custId">A Customer Id</param>

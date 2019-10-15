@@ -8,7 +8,7 @@ DROP TABLE Customer
 GO
 CREATE TABLE Customer
 (
-	CustomerId INT IDENTITY(1000,1) PRIMARY KEY, 
+	CustomerId INT IDENTITY(1,1) PRIMARY KEY, 
 	FirstName NVARCHAR(50) NOT NULL,
 	LastName NVARCHAR(50) NOT NULL,
 	CustomerAddress NVARCHAR(300) NOT NULL
@@ -19,7 +19,7 @@ GO
 GO
 CREATE TABLE Product
 (
-	ProductId INT IDENTITY(1000,1) PRIMARY KEY,
+	ProductId INT IDENTITY(1,1) PRIMARY KEY,
 	ProductName NVARCHAR(50) NOT NULL,
 	ProductDescription NVARCHAR(200) NULL,
 	UnitCost money NOT NULL
@@ -31,7 +31,7 @@ GO
 GO
 CREATE TABLE Location
 (
-	LocationId INT IDENTITY(1000,1) PRIMARY KEY,
+	LocationId INT IDENTITY(1,1) PRIMARY KEY,
 	LocationName NVARCHAR(50) NOT NULL,
 	LocationAddress NVARCHAR(300) NOT NULL
 );
@@ -41,7 +41,7 @@ GO
 --DROP TABLE Inventory
 CREATE TABLE Inventory
 (
-	InventoryId INT IDENTITY(1000000, 1) PRIMARY KEY,
+	InventoryId INT IDENTITY(1, 1) PRIMARY KEY,
 	LocationId INT NOT NULL, --Foreign Key
 	ProductId INT NOT NULL, --Foreign Key
 	Quantity INT DEFAULT(0) NOT NULL
@@ -59,10 +59,9 @@ FK_Inventory_Product FOREIGN KEY (ProductId) REFERENCES Product (ProductId) ON D
 GO
 CREATE TABLE Receipt
 (
-	ReceiptId INT IDENTITY(100000, 1) PRIMARY KEY,
+	ReceiptId INT IDENTITY(1, 1) PRIMARY KEY,
 	LocationId INT NOT NULL, --Foreign Key
-	CustomerId INT NOT NULL, --Foreign Key
-	ReceiptTimestamp DATETIME2 NOT NULL	
+	CustomerId INT NOT NULL, --Foreign Key	
 );
 GO
 
@@ -76,7 +75,7 @@ FK_Receipt_Customer FOREIGN KEY (CustomerId) REFERENCES Customer (CustomerId) ON
 --DROP TABLE Basket
 CREATE TABLE Basket
 (
-	BasketId INT IDENTITY(1000000, 1) PRIMARY KEY,
+	BasketId INT IDENTITY(1, 1) PRIMARY KEY,
 	ReceiptId INT NOT NULL, --Foreign Key
 	ProductId INT NOT NULL, --Foreign Key
 	Quantity INT DEFAULT(0) NOT NULL

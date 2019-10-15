@@ -173,22 +173,114 @@ namespace Store.App
                         }
                         else if (inputMenu2 == "3")
                         {
+                            string inputMenu3Entry;
+                            int locId = 0;
+                            bool isInt = false;
+                            do
+                            {
+                                Console.Clear();
+                                Console.WriteLine("Display All Orders for a Location\n");
+
+                                Console.Write("Enter a Location ID: ");
+                                inputMenu3Entry = Console.ReadLine();
+                                isInt = Int32.TryParse(inputMenu3Entry, out locId);
+                            }
+                            while (!isInt);
+
+                            var results = ordContext.GetOrdersByLocation(locId).ToList();
+                            if (results.Count > 0)
+                            {
+                                foreach (dom.Order ord in results)
+                                {
+                                    Console.WriteLine(ord.ToString() + "\n");
+                                }
+                            }
+                            else
+                                Console.WriteLine($"No results matching LocationID {locId}");
 
                         }
                         else if (inputMenu2 == "4")
                         {
+                            string inputMenu4Entry;
+                            int ordId = 0;
+                            bool isInt = false;
+                            do
+                            {
+                                Console.Clear();
+                                Console.WriteLine("Display Details of an Order:\n");
+
+                                Console.Write("Enter a Order ID: ");
+                                inputMenu4Entry = Console.ReadLine();
+                                isInt = Int32.TryParse(inputMenu4Entry, out ordId);
+                            }
+                            while (!isInt);
+
+                            var result = ordContext.GetOrdersByLocation(ordId).ToList().FirstOrDefault();
+                            if(result == null)
+                            {
+                                Console.WriteLine($"No results matching OrderID {ordId}");
+                            }
+                            else
+                            {
+                                Console.WriteLine(result.ToString());
+                                Console.WriteLine(result.BasketToString());
+                            }
 
                         }
                         else if (inputMenu2 == "5")
                         {
-
+                            break;
                         }
 
                     }
                 }
                 else if (input == "3")
                 {
+                    string inputStr;
+                    int custId = 0;
+                    int locId = 0;
+                    bool isInt = false;
 
+
+                    do
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Place an Order Menu\n");
+
+                        Console.Write("Enter a Customer ID: ");
+                        inputStr = Console.ReadLine();
+                        isInt = Int32.TryParse(inputStr, out custId);
+                    }
+                    while (!isInt);
+
+                    isInt = false;
+                    do
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Place an Order Menu\n");
+
+                        Console.WriteLine($"Enter a Customer ID: {custId}");
+                        Console.Write("Enter a Location ID: ");
+                        inputStr = Console.ReadLine();
+                        isInt = Int32.TryParse(inputStr, out locId);
+                    }
+                    while (!isInt);
+
+
+                    var cust = custContext.GetCustomers(firstName: "Greg").First();
+                    var prod = prodContext.GetProducts(3).First();
+                    var loc = locContext.GetLocations(2).First();
+
+                    var ord = new dom.Order(cust, loc, 4);
+                    ord.basket.Add(prod, 1);
+                    //ordContext.AddOrder(ord);
+                    //ordContext.Save();
+
+                    var newOrd = ordContext.GetOrdersByCustomer(1).Last();
+                    var dbId = newOrd.OrderId;
+                    Console.WriteLine(dbId);
+                    ordContext.AddBasket(ord, dbId);
+                    ordContext.Save();
                 }
                 else if (input == "4")
                 {
