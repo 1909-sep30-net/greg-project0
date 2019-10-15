@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using dom = Domains.Library;
 
@@ -54,6 +55,25 @@ namespace DbLibrary.Library
                     //AddItemToBasket(prodDom, item.Quantity);
             }
             return ordDom;
+        }
+
+        public static Entities.Receipt MapOrder(dom.Order ordDom)
+        {
+            return new Entities.Receipt
+            {
+                LocationId = ordDom.OrderLocation.StoreID,
+                CustomerId = ordDom.OrderCustomer.CustID,
+            };
+        }
+
+        public static IEnumerable<Entities.Basket> MapBasket(dom.Order ordDom, int dbId)
+        {
+            var list = new List<Entities.Basket> { };
+            foreach(KeyValuePair<dom.Product, int> item in ordDom.basket)
+            {
+                list.Add(new Entities.Basket { ProductId = item.Key.ProductID, Quantity = item.Value });
+            }
+            return list;
         }
     }
 }

@@ -1,10 +1,9 @@
 DROP TABLE Basket
 DROP TABLE Inventory
-DROP TABLE Customer
 DROP TABLE Product
-DROP TABLE Location
 DROP TABLE Receipt
-
+DROP TABLE Location
+DROP TABLE Customer
 --Create Customer Table
 GO
 CREATE TABLE Customer
@@ -12,10 +11,7 @@ CREATE TABLE Customer
 	CustomerId INT IDENTITY(1000,1) PRIMARY KEY, 
 	FirstName NVARCHAR(50) NOT NULL,
 	LastName NVARCHAR(50) NOT NULL,
-	Street NVARCHAR(50) NULL,
-	City NVARCHAR(50) NULL,
-	State NVARCHAR(50) NULL,
-	ZipCode NVARCHAR(10) NULL,
+	CustomerAddress NVARCHAR(300) NOT NULL
 );
 GO
 
@@ -37,10 +33,7 @@ CREATE TABLE Location
 (
 	LocationId INT IDENTITY(1000,1) PRIMARY KEY,
 	LocationName NVARCHAR(50) NOT NULL,
-	Street NVARCHAR(50) NULL,
-	City NVARCHAR(50) NULL,
-	State NVARCHAR(50) NULL,
-	ZipCode NVARCHAR(10) NULL,
+	LocationAddress NVARCHAR(300) NOT NULL
 );
 GO
 --Create Inventory Table (location, product)
@@ -56,10 +49,10 @@ CREATE TABLE Inventory
 GO
 
 ALTER TABLE Inventory ADD CONSTRAINT
-FK_Inventory_Location FOREIGN KEY (LocationId) REFERENCES Location (LocationId);
+FK_Inventory_Location FOREIGN KEY (LocationId) REFERENCES Location (LocationId) ON DELETE CASCADE;
 
 ALTER TABLE Inventory ADD CONSTRAINT
-FK_Inventory_Product FOREIGN KEY (ProductId) REFERENCES Product (ProductId)
+FK_Inventory_Product FOREIGN KEY (ProductId) REFERENCES Product (ProductId) ON DELETE CASCADE
 
 --Create Receipt (Order) Table
 --DROP TABLE Receipt
@@ -74,10 +67,10 @@ CREATE TABLE Receipt
 GO
 
 ALTER TABLE Receipt ADD CONSTRAINT
-FK_Receipt_Location FOREIGN KEY (LocationId) REFERENCES Location (LocationId)
+FK_Receipt_Location FOREIGN KEY (LocationId) REFERENCES Location (LocationId) ON DELETE CASCADE
 
 ALTER TABLE Receipt ADD CONSTRAINT
-FK_Receipt_Customer FOREIGN KEY (CustomerId) REFERENCES Customer (CustomerId)
+FK_Receipt_Customer FOREIGN KEY (CustomerId) REFERENCES Customer (CustomerId) ON DELETE CASCADE
 
 --Create Basket Table (receipt, product)
 --DROP TABLE Basket
@@ -91,7 +84,7 @@ CREATE TABLE Basket
 GO
 
 ALTER TABLE Basket ADD CONSTRAINT
-FK_Basket_Receipt FOREIGN KEY (ReceiptId) REFERENCES Receipt (ReceiptId);
+FK_Basket_Receipt FOREIGN KEY (ReceiptId) REFERENCES Receipt (ReceiptId) ON DELETE CASCADE;
 
 ALTER TABLE Basket ADD CONSTRAINT
-FK_Basket_Product FOREIGN KEY (ProductId) REFERENCES Product (ProductId)
+FK_Basket_Product FOREIGN KEY (ProductId) REFERENCES Product (ProductId) ON DELETE CASCADE

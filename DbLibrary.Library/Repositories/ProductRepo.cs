@@ -14,12 +14,15 @@ namespace DbLibrary.Library.Repositories
         public ProductRepo(Entities.Project0Context dbContext) =>
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
 
-        public IEnumerable<dom.Product> GetProducts()
+        public IEnumerable<dom.Product> GetProducts(int prodId = -1)
         {
             IQueryable<Entities.Product> items = _dbContext.Product
                 .Include(p => p.Basket).AsNoTracking()
                 .Include(p => p.Inventory)
                 .ThenInclude(i => i.Location);
+
+            if (prodId != -1)
+                items = items.Where(p => p.ProductId == prodId);
 
             return items.Select(Mapper.MapProduct);
         }

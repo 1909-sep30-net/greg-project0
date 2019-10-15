@@ -14,6 +14,30 @@ namespace DbLibrary.Library.Repositories
         public OrderRepo(Entities.Project0Context dbContext) =>
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
 
+
+        public void AddOrder(dom.Order ordDom)
+        {
+            if (ordDom.OrderId != 0)
+            {
+                Console.WriteLine($"Order ID is set to {ordDom.OrderId}, which will be ignored.");
+            }
+            Entities.Receipt ordEnt = Mapper.MapOrder(ordDom);
+            ordEnt.CustomerId = 0;
+            _dbContext.Add(ordEnt);
+            //Don't forget to save!
+        }
+        public void AddBasket(dom.Order ordDom, int dbId)
+        {
+            var basket = Mapper.MapBasket(ordDom, dbId);
+            foreach(Entities.Basket item in basket)
+            {
+                _dbContext.Add(item);
+            }
+            //Don't forget to save!
+        }
+
+
+
         public IEnumerable<dom.Order> GetOrders(int custId = -1)
         {
             IQueryable<Entities.Receipt> items = _dbContext.Receipt
@@ -47,6 +71,11 @@ namespace DbLibrary.Library.Repositories
                     .Where(r => r.LocationId == locId);
             
             return items.Select(Mapper.MapOrder);
+        }
+
+        public void Save()
+        {
+            _dbContext.SaveChanges();
         }
     }
 }

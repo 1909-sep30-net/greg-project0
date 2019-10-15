@@ -30,13 +30,11 @@ namespace DbLibrary.Library.Entities
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.Basket)
                     .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Basket_Product");
 
                 entity.HasOne(d => d.Receipt)
                     .WithMany(p => p.Basket)
                     .HasForeignKey(d => d.ReceiptId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Basket_Receipt");
             });
 
@@ -60,13 +58,11 @@ namespace DbLibrary.Library.Entities
                 entity.HasOne(d => d.Location)
                     .WithMany(p => p.Inventory)
                     .HasForeignKey(d => d.LocationId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Inventory_Location");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.Inventory)
                     .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Inventory_Product");
             });
 
@@ -97,13 +93,11 @@ namespace DbLibrary.Library.Entities
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Receipt)
                     .HasForeignKey(d => d.CustomerId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Receipt_Customer");
 
                 entity.HasOne(d => d.Location)
                     .WithMany(p => p.Receipt)
                     .HasForeignKey(d => d.LocationId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Receipt_Location");
             });
 
