@@ -81,7 +81,8 @@ namespace Domains.Library
             string str = "";
             foreach (KeyValuePair<Product, int> item in basket)
             {
-                str += $"\n{item.Key.ToString()} \n\t\tQuantity: {item.Value}";
+                var prod = item.Key;
+                str += $"\n{prod.ToString()} \n\t\tQuantity: {item.Value}";
             }
             return str;
         }
@@ -93,7 +94,7 @@ namespace Domains.Library
         /// <returns>A formatted respresentation of this Order</returns>
         public override string ToString()
         {
-            return $"\nOrder ID: {this.OrderId} \n\tCustomer ID: {this.OrderCustomer.CustID} \n\tLocation ID: {this.OrderLocation.StoreID}";
+            return $"\nOrder ID: {this.OrderId} \n\tCustomer ID: {this.OrderCustomer.CustID}\tCustomer Name: {this.OrderCustomer.FullName}\n\tLocation ID: {this.OrderLocation.StoreID}\tLocation Name: {this.OrderLocation.StoreName}";
         }
 
 

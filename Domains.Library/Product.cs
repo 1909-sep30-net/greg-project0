@@ -20,7 +20,6 @@ namespace Domains.Library
         public string ProductName
         {
             get { return productName; }
-            //set { productName = value; }
             set
             {
                 if (value == null || value == "")
@@ -42,7 +41,7 @@ namespace Domains.Library
                 if (value.Length > 200)
                     throw new ArgumentException("Description cannot be greater than 200 characters.");
                 else
-                    productName = value;
+                    productDescription = value;
             }
         }
 
@@ -79,7 +78,7 @@ namespace Domains.Library
         /// <returns>A formatted respresentation of this Product</returns>
         public override string ToString()
         {
-            string str = $"\nID: {this.ProductID} \n\tNAME: {this.ProductName}";
+            string str = $"\nProductID: {this.ProductID} \n\tNAME: {this.ProductName}";
             if (this.ProductDescription != null)
                 str += $"\n\tDESCRIPTION: { this.ProductDescription}";
             return str;

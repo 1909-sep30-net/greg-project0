@@ -77,7 +77,7 @@ namespace DbLibrary.Library.Repositories
         /// </summary>
         /// <param name="ordId">An Order Id</param>
         /// <returns>A list of Domain Orders</returns>
-        public IEnumerable<dom.Order> GetOrderByOrderId(int ordId)
+        public IEnumerable<dom.Order> GetOrderById(int ordId)
         {
             IQueryable<Entities.Receipt> items = _dbContext.Receipt
                     .Include(r => r.Customer).AsNoTracking()

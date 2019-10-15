@@ -134,7 +134,7 @@ namespace Store.App
                                 lastNameSearch = null;
 
                             Console.WriteLine($"\nSearching for Customers with\n\tFirst Name: {firstNameSearch}\n\tLast Name: {lastNameSearch}\n\nResults:");
-
+                            Console.WriteLine();
                             var customersSearched = custContext.GetCustomers(firstNameSearch, lastNameSearch).ToList();
                             foreach(dom.Customer cust in customersSearched)
                             {
@@ -170,6 +170,8 @@ namespace Store.App
                             }
                             else
                                 Console.WriteLine($"No results matching CustomerID {custId}");
+                            Console.WriteLine("Press any key to continue.");
+                            Console.ReadKey();
                         }
                         else if (inputMenu2 == "3")
                         {
@@ -197,6 +199,8 @@ namespace Store.App
                             }
                             else
                                 Console.WriteLine($"No results matching LocationID {locId}");
+                            Console.WriteLine("Press any key to continue.");
+                            Console.ReadKey();
 
                         }
                         else if (inputMenu2 == "4")
@@ -215,7 +219,7 @@ namespace Store.App
                             }
                             while (!isInt);
 
-                            var result = ordContext.GetOrdersByLocation(ordId).ToList().FirstOrDefault();
+                            var result = ordContext.GetOrderById(ordId).ToList().FirstOrDefault();
                             if(result == null)
                             {
                                 Console.WriteLine($"No results matching OrderID {ordId}");
@@ -225,6 +229,8 @@ namespace Store.App
                                 Console.WriteLine(result.ToString());
                                 Console.WriteLine(result.BasketToString());
                             }
+                            Console.WriteLine("Press any key to continue.");
+                            Console.ReadKey();
 
                         }
                         else if (inputMenu2 == "5")
