@@ -32,7 +32,7 @@ namespace DbLibrary.Library.Repositories
         /// <param name="firstName">The First name to filter by</param>
         /// <param name="lastName">The Last name to filter by</param>
         /// <returns>A list of Domain Customers</returns>
-        public IEnumerable<dom.Customer> GetCustomers(string firstName = null, string lastName = null)
+        public IEnumerable<dom.Customer> GetCustomers(string firstName = null, string lastName = null, int custId = -1)
         {
             IQueryable<Entities.Customer> items = _dbContext.Customer
                 .Include(c => c.Receipt).AsNoTracking();
@@ -46,6 +46,10 @@ namespace DbLibrary.Library.Repositories
             if (lastName != null)
             {
                 items = items.Where(c => c.LastName.Contains(lastName));
+            }
+            if(custId != -1)
+            {
+                items = items.Where(c => c.CustomerId == custId);
             }
 
             return items.Select(Mapper.MapCustomer);

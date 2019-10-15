@@ -253,6 +253,18 @@ namespace Store.App
                     }
                     while (!isInt);
 
+                    var cust = custContext.GetCustomers(custId: custId).FirstOrDefault();
+                    if(cust == null)
+                    {
+                        Console.WriteLine($"Customer {custId} does not exist.");
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Customer found:\n");
+                        Console.WriteLine(cust.ToString());
+                    }
+
                     isInt = false;
                     do
                     {
@@ -260,28 +272,117 @@ namespace Store.App
                         Console.WriteLine("Place an Order Menu\n");
 
                         Console.WriteLine($"Enter a Customer ID: {custId}");
+                        Console.WriteLine("Customer found:\n");
+                        Console.WriteLine(cust.ToString());
+
                         Console.Write("Enter a Location ID: ");
                         inputStr = Console.ReadLine();
                         isInt = Int32.TryParse(inputStr, out locId);
                     }
                     while (!isInt);
 
+                    var loc = locContext.GetLocations(locId).FirstOrDefault();
+                    if (loc == null)
+                    {
+                        Console.WriteLine($"Location {locId} does not exist.");
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Location found:\n");
+                        Console.WriteLine(loc.ToString());
+                    }
 
-                    var cust = custContext.GetCustomers(firstName: "Greg").First();
-                    var prod = prodContext.GetProducts(3).First();
-                    var loc = locContext.GetLocations(2).First();
-
-                    var ord = new dom.Order(cust, loc, 4);
-                    ord.basket.Add(prod, 1);
-                    //ordContext.AddOrder(ord);
-                    //ordContext.Save();
-
-                    var newOrd = ordContext.GetOrdersByCustomer(1).Last();
-                    var dbId = newOrd.OrderId;
-                    Console.WriteLine(dbId);
-                    ordContext.AddBasket(ord, dbId);
+                    var ord = new dom.Order(cust, loc, 0);
+                    ordContext.AddOrder(ord);
                     ordContext.Save();
-                }
+                    ord = ordContext.GetOrdersByCustomer(cust.CustID).Last();
+
+                    int prodId = 0;
+
+                    bool done = false;
+                    do
+                    {
+                        do
+                        {
+                            prodId = 0;
+
+                            Console.Clear();
+                            Console.WriteLine("Place an Order Menu\n");
+                            Console.WriteLine($"Customer:\n{cust.ToString()}");
+                            Console.WriteLine($"Location:\n{loc.ToString()}");
+                            Console.WriteLine();
+                            Console.WriteLine("Location inventory:");
+                            Console.WriteLine(loc.InventoryToString());
+                            Console.WriteLine();
+                            Console.WriteLine("Your basket:");
+                            Console.WriteLine(ord.BasketToString());
+
+                            Console.Write("Enter a Product Id, or DONE if finished: ");
+                            inputStr = Console.ReadLine();
+                            if (inputStr.ToUpper() == "DONE")
+                            {
+                                done = true;
+                                isInt = true;
+                            }
+                            else
+                            {
+                                isInt = Int32.TryParse(inputStr, out prodId);
+                            }
+                        }
+                        while (!isInt);
+                        if (!done)
+                        {
+                            var prod = prodContext.GetProducts(prodId).FirstOrDefault();
+                            if(prod == null)
+                            {
+                                Console.WriteLine($"Product {prodId} does not exist");
+                            }
+                            else if(!loc.FindItemById(prodId))
+                            {
+                                Console.WriteLine($"Product {prodId} is not in this location's inventory");
+                            }
+                            else
+                            {
+                                bool isIntQuantity = false;
+                                int quantity = 0;
+                                do
+                                {
+                                    Console.Write("Enter a quanity: ");
+                                    inputStr = Console.ReadLine();
+                                    isIntQuantity = Int32.TryParse(inputStr, out quantity);
+                                    if(isIntQuantity && quantity < 0)
+                                    {
+                                        isIntQuantity = false;
+                                    }
+                                }
+                                while (!isIntQuantity);
+                                if (loc.AdjustQuantity(prod, -1 * quantity))
+                                {
+                                    ord.basket.Add(prod, quantity);
+                                    Console.WriteLine($"Added {quantity} {prod.ProductName}s to basket.");
+                                }
+                            }
+                        }
+                    }
+                    while (!done);
+                        /*
+                        var cust = custContext.GetCustomers(firstName: "Greg").First();
+                        var prod = prodContext.GetProducts(3).First();
+                        var loc = locContext.GetLocations(2).First();
+
+                        var ord = new dom.Order(cust, loc, 4);
+                        ord.basket.Add(prod, 1);
+                        //ordContext.AddOrder(ord);
+                        //ordContext.Save();
+
+                        var newOrd = ordContext.GetOrdersByCustomer(1).Last();
+                        var dbId = newOrd.OrderId;
+                        Console.WriteLine(dbId);
+                        ordContext.AddBasket(ord, dbId);
+                        ordContext.Save();
+                        */
+                    }
                 else if (input == "4")
                 {
 

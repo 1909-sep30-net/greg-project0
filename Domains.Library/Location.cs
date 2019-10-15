@@ -121,21 +121,17 @@ namespace Domains.Library
         /// Attempts to find an item by id in the inventory.
         /// </summary>
         /// <param name="id">The id of the item to find</param>
-        /// <param name="product">OUT: The product, if found. Else, null</param>
         /// <returns>If the item is found, true. Else, false.</returns>
-        public bool FindItemByName(int id, out Product product)
+        public bool FindItemById(int id)
         {
             //loops through inventory comparing product until found
             foreach (KeyValuePair<Product, int> item in inventory)
             {
                 if (item.Value == id)
                 {
-                    product = item.Key;
                     return true;
                 }
             }
-            Console.WriteLine("Item is not in inventory.");
-            product = null;
             return false;
         }
 
