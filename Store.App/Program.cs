@@ -1,18 +1,19 @@
 ﻿using System;
 using dom = Domains.Library;
-using Serilog;
 using System.Collections.Generic;
 using DbLibrary.Library;
 using DbRepo = DbLibrary.Library.Repositories;
 using DbLibrary.Library.Entities;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using NLog;
 
 namespace Store.App
 {
-    class Program
+    public static class Program
     {
-        static void Main(string[] args)
+        private static readonly ILogger s_logger = LogManager.GetCurrentClassLogger();
+        public static void Main(string[] args)
         {
             //Establish dbContext, our connection to the database
             var optionsBuilder = new DbContextOptionsBuilder<Project0Context>();
@@ -79,7 +80,7 @@ namespace Store.App
                             address = null;
                         }
                     }
-                    Console.WriteLine($"Creating a new customer with:\nFirst Name:  {firstName}\nLast Name:  {lastName}\nAddress:  {address}");
+                    Console.WriteLine($"\nCreating a new customer with:\nFirst Name:  {firstName}\nLast Name:  {lastName}\nAddress:  {address}");
 
                     try 
                     { 
@@ -94,7 +95,8 @@ namespace Store.App
                     }
                     catch (ArgumentNullException ex) 
                     { 
-                        Console.WriteLine(ex); 
+                        Console.WriteLine(ex.Message);
+                        s_logger.Info(ex);
                     }
                 }
                 else if (input == "2")
@@ -299,86 +301,95 @@ namespace Store.App
                         Console.WriteLine(loc.ToString());
                     }
 
-                    var ord = new dom.Order(cust, loc, 0);
-                    ordContext.AddOrder(ord);
-                    ordContext.Save();
-                    ord = ordContext.GetOrdersByCustomer(cust.CustID).Last();
-
-                    int prodId = 0;
-
-                    bool done = false;
-                    do
+                    try
                     {
+                        var ord = new dom.Order(cust, loc, 0);
+                        ordContext.AddOrder(ord);
+                        ordContext.Save();
+                        ord = ordContext.GetOrdersByCustomer(cust.CustID).Last();
+
+
+                        int prodId = 0;
+
+                        bool done = false;
                         do
                         {
-                            prodId = 0;
+                            do
+                            {
+                                prodId = 0;
 
-                            Console.Clear();
-                            Console.WriteLine("Place an Order Menu\n");
-                            Console.WriteLine($"Customer:\n{cust.ToString()}");
-                            Console.WriteLine($"Location:\n{loc.ToString()}");
-                            Console.WriteLine();
-                            Console.WriteLine("Location inventory:");
-                            Console.WriteLine(loc.InventoryToString());
-                            Console.WriteLine();
-                            Console.WriteLine("Your basket:");
-                            Console.WriteLine(ord.BasketToString());
+                                Console.Clear();
+                                Console.WriteLine("Place an Order Menu\n");
+                                Console.WriteLine($"Customer:\n{cust.ToString()}");
+                                Console.WriteLine($"Location:\n{loc.ToString()}");
+                                Console.WriteLine();
+                                Console.WriteLine("Location inventory:");
+                                Console.WriteLine(loc.InventoryToString());
+                                Console.WriteLine();
+                                Console.WriteLine("Your basket:");
+                                Console.WriteLine(ord.BasketToString());
 
-                            Console.Write("Enter a Product Id, or DONE if finished: ");
-                            inputStr = Console.ReadLine();
-                            if (inputStr.ToUpper() == "DONE")
-                            {
-                                done = true;
-                                isInt = true;
-                            }
-                            else
-                            {
-                                isInt = Int32.TryParse(inputStr, out prodId);
-                            }
-                        }
-                        while (!isInt);
-                        if (!done)
-                        {
-                            var prod = prodContext.GetProducts(prodId).FirstOrDefault();
-                            if(prod == null)
-                            {
-                                Console.WriteLine($"Product {prodId} does not exist");
-                                Console.WriteLine("\nPress any key to continue.");
-                                Console.ReadKey();
-                            }
-                            else if(!loc.FindItemById(prodId))
-                            {
-                                Console.WriteLine($"Product {prodId} is not in this location's inventory");
-                                Console.WriteLine("\nPress any key to continue.");
-                                Console.ReadKey();
-                            }
-                            else
-                            {
-                                bool isIntQuantity = false;
-                                int quantity = 0;
-                                do
+                                Console.Write("Enter a Product Id, or DONE if finished: ");
+                                inputStr = Console.ReadLine();
+                                if (inputStr.ToUpper() == "DONE")
                                 {
-                                    Console.Write("Enter a quanity: ");
-                                    inputStr = Console.ReadLine();
-                                    isIntQuantity = Int32.TryParse(inputStr, out quantity);
-                                    
+                                    done = true;
+                                    isInt = true;
                                 }
-                                while (!isIntQuantity);
-                                if (loc.AdjustQuantity(prod, -1 * quantity))
+                                else
                                 {
-                                    ord.basket.Add(prod, quantity);
-                                    Console.WriteLine($"Added {quantity} {prod.ProductName}s to basket.");
+                                    isInt = Int32.TryParse(inputStr, out prodId);
+                                }
+                            }
+                            while (!isInt);
+                            if (!done)
+                            {
+                                var prod = prodContext.GetProducts(prodId).FirstOrDefault();
+                                if (prod == null)
+                                {
+                                    Console.WriteLine($"Product {prodId} does not exist");
                                     Console.WriteLine("\nPress any key to continue.");
                                     Console.ReadKey();
                                 }
+                                else if (!loc.FindItemById(prodId))
+                                {
+                                    Console.WriteLine($"Product {prodId} is not in this location's inventory");
+                                    Console.WriteLine("\nPress any key to continue.");
+                                    Console.ReadKey();
+                                }
+                                else
+                                {
+                                    bool isIntQuantity = false;
+                                    int quantity = 0;
+                                    do
+                                    {
+                                        Console.Write("Enter a quanity: ");
+                                        inputStr = Console.ReadLine();
+                                        isIntQuantity = Int32.TryParse(inputStr, out quantity);
+
+                                    }
+                                    while (!isIntQuantity);
+                                    if (loc.AdjustQuantity(prod, -1 * quantity))
+                                    {
+                                        ord.basket.Add(prod, quantity);
+                                        Console.WriteLine($"Added {quantity} {prod.ProductName}s to basket.");
+                                        Console.WriteLine("\nPress any key to continue.");
+                                        Console.ReadKey();
+                                    }
+                                }
                             }
                         }
-                    }
-                    while (!done);
-                    ordContext.AddBasket(ord);
-                    ordContext.Save();
+                        while (!done);
+                        ordContext.AddBasket(ord);
+                        ordContext.Save();
 
-                    Console.WriteLine($"Order {ord.OrderId} Complete.");
+                        Console.WriteLine($"Order {ord.OrderId} Complete.");
+                    }
+                    catch(ArgumentNullException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        s_logger.Info(ex);
+                    }
                     Console.WriteLine("\nPress any key to continue.");
                     Console.ReadKey();
                 }
@@ -392,7 +403,7 @@ namespace Store.App
             }
         }
 
-        private void Notes()
+        private static void Notes()
         {
             //Add a domain customer to the database
             /*
