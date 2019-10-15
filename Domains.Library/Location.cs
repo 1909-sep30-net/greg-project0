@@ -127,7 +127,7 @@ namespace Domains.Library
             //loops through inventory comparing product until found
             foreach (KeyValuePair<Product, int> item in inventory)
             {
-                if (item.Value == id)
+                if (item.Key.ProductID == id)
                 {
                     return true;
                 }
@@ -145,11 +145,11 @@ namespace Domains.Library
         {
             foreach (KeyValuePair<Product, int> item in inventory)
             {
-                if (item.Key == product)
+                if (item.Key.ProductID == product.ProductID)
                 {
                     if(item.Value + quantity >= 0)
                     {
-                        inventory[product] = item.Value + quantity;
+                        inventory[item.Key] = item.Value + quantity;
                         return true;
                     }
                     else
@@ -185,7 +185,7 @@ namespace Domains.Library
         /// <returns>A formatted respresentation of this Location</returns>
         public override string ToString()
         {
-            return $"\tID : {StoreID} \t\nNAME: {StoreName} \t\nADDRESS: {Address}";
+            return $"\tID : {StoreID} \n\tNAME: {StoreName} \n\tADDRESS: {Address}";
         }
 
 

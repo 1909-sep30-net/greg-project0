@@ -58,3 +58,4 @@ SELECT * FROM Location
 SELECT * FROM Inventory
 SELECT * FROM Receipt
 SELECT * FROM Basket
+

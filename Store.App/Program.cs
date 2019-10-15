@@ -343,10 +343,14 @@ namespace Store.App
                             if(prod == null)
                             {
                                 Console.WriteLine($"Product {prodId} does not exist");
+                                Console.WriteLine("\nPress any key to continue.");
+                                Console.ReadKey();
                             }
                             else if(!loc.FindItemById(prodId))
                             {
                                 Console.WriteLine($"Product {prodId} is not in this location's inventory");
+                                Console.WriteLine("\nPress any key to continue.");
+                                Console.ReadKey();
                             }
                             else
                             {
@@ -357,16 +361,15 @@ namespace Store.App
                                     Console.Write("Enter a quanity: ");
                                     inputStr = Console.ReadLine();
                                     isIntQuantity = Int32.TryParse(inputStr, out quantity);
-                                    if(isIntQuantity && quantity < 0)
-                                    {
-                                        isIntQuantity = false;
-                                    }
+                                    
                                 }
                                 while (!isIntQuantity);
                                 if (loc.AdjustQuantity(prod, -1 * quantity))
                                 {
                                     ord.basket.Add(prod, quantity);
                                     Console.WriteLine($"Added {quantity} {prod.ProductName}s to basket.");
+                                    Console.WriteLine("\nPress any key to continue.");
+                                    Console.ReadKey();
                                 }
                             }
                         }
@@ -375,11 +378,14 @@ namespace Store.App
                     ordContext.AddBasket(ord);
                     ordContext.Save();
 
-                    Console.WriteLine($"Order {ord.OrderId} Complete. There are {ord.basket.Count()} items in the basket.");
-                    }
+                    Console.WriteLine($"Order {ord.OrderId} Complete.");
+                    Console.WriteLine("\nPress any key to continue.");
+                    Console.ReadKey();
+                }
                 else if (input == "4")
                 {
-                    Console.WriteLine("Closing application...\nPress any key to continue");
+                    Console.WriteLine("Closing application...");
+                    Console.WriteLine("\nPress any key to continue.");
                     Console.ReadKey();
                     break;
                 }
