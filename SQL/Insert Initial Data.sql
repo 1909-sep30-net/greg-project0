@@ -15,7 +15,7 @@ INSERT INTO Product(ProductName, ProductDescription, UnitCost) VALUES
 
 INSERT INTO Location(LocationName, LocationAddress) VALUES
 	('Walmart', '123 Main Street Arlington TX 70601'),
-	('Walmart', '344 South Street Lake Charles LA 70721')
+	('Kroger', '344 South Street Lake Charles LA 70721')
 
 --SELECT * FROM Location
 
