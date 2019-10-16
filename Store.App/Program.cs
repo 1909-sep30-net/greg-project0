@@ -31,10 +31,15 @@ namespace Store.App
             var locContext = new DbRepo.LocationRepo(dbContext);
             var ordContext = new DbRepo.OrderRepo(dbContext);
 
+            string storeName =  " ____  ____  __  ____  ____  _  _   __   __ _   __    ___  ____  ____ \n" +
+                                "/ ___)(_  _)/  \\(  _ \\(  __)( \\/ ) / _\\ (  ( \\ / _\\  / __)(  __)(  _ \\\n" +
+                                "\\___ \\  )( (  O ))   / ) _) / \\/ \\/    \\/    //    \\( (_ \\ ) _)  )   /\n" +
+                                "(____/ (__) \\__/(__\\_)(____)\\_)(_/\\_/\\_/\\_)__)\\_/\\_/ \\___/(____)(__\\_)\n";
+
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("StoreManager\n");
+                Console.WriteLine(storeName);
                 Console.WriteLine();
 
                 Console.WriteLine("1:\tAdd a customer");

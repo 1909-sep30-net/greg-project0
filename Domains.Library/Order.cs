@@ -106,6 +106,16 @@ namespace Domains.Library
             return Math.Round(total, 2);
         }
 
+        public int CalculateNumberOfItemsInBasket()
+        {
+            int result = 0;
+            foreach (KeyValuePair<Product, int> item in basket)
+            {
+                result += item.Value;
+            }
+            return result;
+        }
+
         /// <summary>
         /// A formatted representation of the products and quantities in this order's basket
         /// </summary>
@@ -130,7 +140,8 @@ namespace Domains.Library
         {
             return $"\nOrder ID: {this.OrderId} \n\tCustomer ID: {this.OrderCustomer.CustID}\tCustomer Name: {this.OrderCustomer.FullName}" +
                 $"\n\tLocation ID: {this.OrderLocation.StoreID}\tLocation Name: {this.OrderLocation.StoreName}" +
-                $"\n\tTimestamp: {this.OrderTimestamp}\n\tTotal Cost: {this.CalculateCostOfBasket()}";
+                $"\n\tTimestamp: {this.OrderTimestamp}\n\tNumber of Items: {this.CalculateNumberOfItemsInBasket()}" +
+                $"\n\tTotal Cost: {this.CalculateCostOfBasket()}";
         }
 
 
