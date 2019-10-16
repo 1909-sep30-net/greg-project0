@@ -512,19 +512,19 @@ namespace Store.App
                     try
                     {
                         var customers = custContext.GetCustomers().ToList();
-                        await SerializeJsonToFileAsync(@"C:\revature\greg-project0\json\custData.json", customers);
+                        await Serialize.JsonToFileAsync(@"C:\revature\greg-project0\json\custData.json", customers);
                         Console.WriteLine("Customers successfully saved.");
 
                         var products = prodContext.GetProducts().ToList();
-                        await SerializeJsonToFileAsync(@"C:\revature\greg-project0\json\prodData.json", products);
+                        await Serialize.JsonToFileAsync(@"C:\revature\greg-project0\json\prodData.json", products);
                         Console.WriteLine("Products successfully saved.");
 
                         var locations = locContext.GetLocations().ToList();
-                        await SerializeJsonToFileAsync(@"C:\revature\greg-project0\json\locData.json", locations);
+                        await Serialize.JsonToFileAsync(@"C:\revature\greg-project0\json\locData.json", locations);
                         Console.WriteLine("Locations successfully saved.");
 
                         var orders = ordContext.GetOrders().ToList();
-                        await SerializeJsonToFileAsync(@"C:\revature\greg-project0\json\ordData.json", orders);
+                        await Serialize.JsonToFileAsync(@"C:\revature\greg-project0\json\ordData.json", orders);
                         Console.WriteLine("Orders successfully saved.");
 
                         Console.WriteLine("\nPress any key to continue.");
