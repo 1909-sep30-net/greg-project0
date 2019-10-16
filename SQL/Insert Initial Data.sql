@@ -29,11 +29,11 @@ INSERT INTO Inventory(LocationId, ProductId, Quantity) VALUES
 
 --SELECT * FROM Inventory 
 
-INSERT INTO Receipt(LocationId, CustomerId) VALUES
-	(1, 1), --Greg, walmart tx
-	(1, 3), --Jim d, walmart tx
-	(1, 2), --Ellie, walmart tx
-	(2, 2) --Ellie, walmart la
+INSERT INTO Receipt(LocationId, CustomerId, ReceiptTimestamp) VALUES
+	(1, 1, GETDATE()), --Greg, walmart tx
+	(1, 3, GETDATE()), --Jim d, walmart tx
+	(1, 2, GETDATE()), --Ellie, walmart tx
+	(2, 2, GETDATE()) --Ellie, walmart la
 
 
 --SELECT * FROM Receipt

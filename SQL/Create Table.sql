@@ -62,6 +62,7 @@ CREATE TABLE Receipt
 	ReceiptId INT IDENTITY(1, 1) PRIMARY KEY,
 	LocationId INT NOT NULL, --Foreign Key
 	CustomerId INT NOT NULL, --Foreign Key	
+	ReceiptTimestamp DateTime NOT NULL 
 );
 GO
 

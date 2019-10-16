@@ -10,6 +10,7 @@ namespace Domains.Library
         private Customer orderCustomer;
         private Location orderLocation;
         private int orderId;
+        private DateTime orderTimestamp;
 
         /// <summary>
         /// The Products of the order and the quantity of them
@@ -58,8 +59,14 @@ namespace Domains.Library
             }
         }
 
+        public DateTime OrderTimestamp
+        {
+            get { return orderTimestamp; }
+            set { orderTimestamp = value; }
+        }
+
         /// <summary>
-        /// Constructor for an order.
+        /// Constructor for an order without a timestamp.
         /// </summary>
         /// <param name="customer">The customer of the order</param>
         /// <param name="location">The location of the order</param>
@@ -70,6 +77,23 @@ namespace Domains.Library
             OrderLocation = location;
             OrderId = orderId;
             basket = new Dictionary<Product, int>() { };//initialize an empty basket
+            OrderTimestamp = DateTime.Now;
+        }
+
+        /// <summary>
+        /// Constructor for an order with a Timestamp
+        /// </summary>
+        /// <param name="customer">The customer of the order</param>
+        /// <param name="location">The location of the order</param>
+        /// <param name="orderId">The id of the order. Should only be trusted if this Location was mapped over from a database entity.</param>
+        /// <param name="datetime">The Timestamp of the order</param>
+        public Order(Customer customer, Location location, int orderId, DateTime datetime)
+        {
+            OrderCustomer = customer;
+            OrderLocation = location;
+            OrderId = orderId;
+            basket = new Dictionary<Product, int>() { };//initialize an empty basket
+            OrderTimestamp = datetime;
         }
 
         public decimal CalculateCostOfBasket()
@@ -105,7 +129,8 @@ namespace Domains.Library
         public override string ToString()
         {
             return $"\nOrder ID: {this.OrderId} \n\tCustomer ID: {this.OrderCustomer.CustID}\tCustomer Name: {this.OrderCustomer.FullName}" +
-                $"\n\tLocation ID: {this.OrderLocation.StoreID}\tLocation Name: {this.OrderLocation.StoreName}\n\tTotal Cost: {this.CalculateCostOfBasket()}";
+                $"\n\tLocation ID: {this.OrderLocation.StoreID}\tLocation Name: {this.OrderLocation.StoreName}" +
+                $"\n\tTimestamp: {this.OrderTimestamp}\n\tTotal Cost: {this.CalculateCostOfBasket()}";
         }
 
 

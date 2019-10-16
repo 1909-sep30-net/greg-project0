@@ -73,7 +73,7 @@ namespace DbLibrary.Library
         {
             var custDom = MapCustomer(ordEnt.Customer); 
             var locDom = MapLocation(ordEnt.Location);
-            var ordDom= new dom.Order(custDom, locDom, ordEnt.ReceiptId);
+            var ordDom= new dom.Order(custDom, locDom, ordEnt.ReceiptId,ordEnt.ReceiptTimestamp);
             foreach(Entities.Basket item in ordEnt.Basket)
             {
                 var prodDom = MapProduct(item.Product);
@@ -95,6 +95,7 @@ namespace DbLibrary.Library
             {
                 LocationId = ordDom.OrderLocation.StoreID,
                 CustomerId = ordDom.OrderCustomer.CustID,
+                ReceiptTimestamp = ordDom.OrderTimestamp
             };
         }
 

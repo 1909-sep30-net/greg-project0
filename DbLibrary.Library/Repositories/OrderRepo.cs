@@ -60,7 +60,7 @@ namespace DbLibrary.Library.Repositories
         /// <summary>
         /// Get a list of Domain Orders
         /// </summary>
-        /// <returns>A list of Domain Orders</returns>
+        /// <returns>A list of Domain Orders</returns>z
         public IEnumerable<dom.Order> GetOrders()
         {
             IQueryable<Entities.Receipt> items = _dbContext.Receipt
@@ -68,7 +68,7 @@ namespace DbLibrary.Library.Repositories
                     .Include(r => r.Location).AsNoTracking()
                     .Include(r => r.Basket)
                         .ThenInclude(basket => basket.Product);
-            
+                        
             return items.Select(Mapper.MapOrder);
         }
 

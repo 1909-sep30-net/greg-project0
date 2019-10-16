@@ -13,6 +13,7 @@ namespace DbLibrary.Library.Entities
         public int ReceiptId { get; set; }
         public int LocationId { get; set; }
         public int CustomerId { get; set; }
+        public DateTime ReceiptTimestamp { get; set; }
 
         public virtual Customer Customer { get; set; }
         public virtual Location Location { get; set; }

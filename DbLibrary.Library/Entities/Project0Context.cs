@@ -22,7 +22,7 @@ namespace DbLibrary.Library.Entities
         public virtual DbSet<Product> Product { get; set; }
         public virtual DbSet<Receipt> Receipt { get; set; }
 
-
+       
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Basket>(entity =>
@@ -90,6 +90,8 @@ namespace DbLibrary.Library.Entities
 
             modelBuilder.Entity<Receipt>(entity =>
             {
+                entity.Property(e => e.ReceiptTimestamp).HasColumnType("datetime");
+
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Receipt)
                     .HasForeignKey(d => d.CustomerId)
