@@ -551,42 +551,6 @@ namespace Store.App
             }
         }
 
-        public static async Task SerializeJsonToFileAsync(string jsonFilePath, List<dom.Customer> data)
-        {
-            string json = JsonConvert.SerializeObject(data);
-
-            // exceptions should be handled here, ignored for sake of time
-            await File.WriteAllTextAsync(jsonFilePath, json);
-
-        }
-
-        public static async Task SerializeJsonToFileAsync(string jsonFilePath, List<dom.Product> data)
-        {
-            string json = JsonConvert.SerializeObject(data);
-
-            // exceptions should be handled here, ignored for sake of time
-            await File.WriteAllTextAsync(jsonFilePath, json);
-
-        }
-
-        public static async Task SerializeJsonToFileAsync(string jsonFilePath, List<dom.Location> data)
-        {
-            string json = JsonConvert.SerializeObject(data);
-
-            // exceptions should be handled here, ignored for sake of time
-            await File.WriteAllTextAsync(jsonFilePath, json);
-
-        }
-
-        public static async Task SerializeJsonToFileAsync(string jsonFilePath, List<dom.Order> data)
-        {
-            string json = JsonConvert.SerializeObject(data);
-
-            // exceptions should be handled here, ignored for sake of time
-            await File.WriteAllTextAsync(jsonFilePath, json);
-
-        }
-
         private static void Notes()
         {
             //Add a domain customer to the database
