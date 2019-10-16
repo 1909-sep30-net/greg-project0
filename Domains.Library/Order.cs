@@ -96,6 +96,15 @@ namespace Domains.Library
             OrderTimestamp = datetime;
         }
 
+        public Order()
+        {
+            OrderCustomer = null;
+            OrderLocation = null;
+            OrderId = 0;
+            basket = null;
+            OrderTimestamp = default(DateTime);
+        }
+
         /// <summary>
         /// Adjust the quantity of a product in the basket.
         /// </summary>

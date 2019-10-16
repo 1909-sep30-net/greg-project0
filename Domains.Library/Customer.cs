@@ -95,6 +95,14 @@ namespace Domains.Library
             CustID = custID;
         }
 
+        public Customer()
+        {
+            FirstName = null;
+            LastName = null;
+            Address = null;
+            CustID = 0;
+        }
+
         /// <summary>
         /// Overrides the base ToString
         /// Prints out Customer in an organized format.

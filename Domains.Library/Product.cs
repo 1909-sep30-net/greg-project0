@@ -78,6 +78,15 @@ namespace Domains.Library
                         
         }
 
+        public Product()
+        {
+            ProductName = null;
+            ProductDescription = null;
+            ProductID = 0;
+            Cost = 0;
+
+        }
+
         /// <summary>
         /// Overrides the base ToString()
         /// A formatted respresentation of this Product

@@ -83,7 +83,16 @@ namespace Domains.Library
             
         }
 
-        
+        public Location()
+        {
+            StoreName = null;
+            Address = null;
+            StoreID = 0;
+            inventory = null;//initialize an empty inventory
+
+        }
+
+
         /// <summary>
         /// Adds a new product and quantity to this location's inventory
         /// </summary>

@@ -7,23 +7,29 @@ using DbLibrary.Library.Entities;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using NLog;
+using Newtonsoft.Json;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace Store.App
 {
     public static class Program
     {
         private static readonly ILogger s_logger = LogManager.GetCurrentClassLogger();
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             //Establish dbContext, our connection to the database
             var optionsBuilder = new DbContextOptionsBuilder<Project0Context>();
             optionsBuilder.UseSqlServer(Hidden.ConnectionString);
             using var dbContext = new Project0Context(optionsBuilder.Options);
 
-            RunUI(dbContext);
+
+            //var serializers = new List<XmlSerializer> { custSerializer, prodSerializer, locSerializer, ordSerializer };
+
+            await RunUI(dbContext);
         }
 
-        public static void RunUI(Project0Context dbContext)
+        public static async Task RunUI(Project0Context dbContext)
         {
             //Establish contexts to the four domains
             var custContext = new DbRepo.CustomerRepo(dbContext);
@@ -45,7 +51,8 @@ namespace Store.App
                 Console.WriteLine("1:\tAdd a customer");
                 Console.WriteLine("2:\tPerform Searches and Displays");
                 Console.WriteLine("3:\tPlace an order");
-                Console.WriteLine("4:\tQuit");
+                Console.WriteLine("4:\tSave to file");
+                Console.WriteLine("5:\tQuit");
                 Console.WriteLine();
                 Console.Write("Enter a valid menu option: ");
                 var input = Console.ReadLine();
@@ -502,12 +509,82 @@ namespace Store.App
                 }
                 else if (input == "4")
                 {
+                    try
+                    {
+                        var customers = custContext.GetCustomers().ToList();
+                        await SerializeJsonToFileAsync(@"C:\revature\greg-project0\json\custData.json", customers);
+                        Console.WriteLine("Customers successfully saved.");
+
+                        var products = prodContext.GetProducts().ToList();
+                        await SerializeJsonToFileAsync(@"C:\revature\greg-project0\json\prodData.json", products);
+                        Console.WriteLine("Products successfully saved.");
+
+                        var locations = locContext.GetLocations().ToList();
+                        await SerializeJsonToFileAsync(@"C:\revature\greg-project0\json\locData.json", locations);
+                        Console.WriteLine("Locations successfully saved.");
+
+                        var orders = ordContext.GetOrders().ToList();
+                        await SerializeJsonToFileAsync(@"C:\revature\greg-project0\json\ordData.json", orders);
+                        Console.WriteLine("Orders successfully saved.");
+
+                        Console.WriteLine("\nPress any key to continue.");
+                        Console.ReadKey();
+                    }
+                    catch (IOException ex)
+                    {
+                        Console.WriteLine($"Error while saving: {ex.Message}");
+                        s_logger.Error(ex, "Error while saving.");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Unknown Error while saving: {ex.Message}");
+                        s_logger.Error(ex, "Unknown Error while saving.");
+                    }
+                }
+                else if (input == "5")
+                {
                     Console.WriteLine("Closing application...");
                     Console.WriteLine("\nPress any key to continue.");
                     Console.ReadKey();
                     break;
                 }
             }
+        }
+
+        public static async Task SerializeJsonToFileAsync(string jsonFilePath, List<dom.Customer> data)
+        {
+            string json = JsonConvert.SerializeObject(data);
+
+            // exceptions should be handled here, ignored for sake of time
+            await File.WriteAllTextAsync(jsonFilePath, json);
+
+        }
+
+        public static async Task SerializeJsonToFileAsync(string jsonFilePath, List<dom.Product> data)
+        {
+            string json = JsonConvert.SerializeObject(data);
+
+            // exceptions should be handled here, ignored for sake of time
+            await File.WriteAllTextAsync(jsonFilePath, json);
+
+        }
+
+        public static async Task SerializeJsonToFileAsync(string jsonFilePath, List<dom.Location> data)
+        {
+            string json = JsonConvert.SerializeObject(data);
+
+            // exceptions should be handled here, ignored for sake of time
+            await File.WriteAllTextAsync(jsonFilePath, json);
+
+        }
+
+        public static async Task SerializeJsonToFileAsync(string jsonFilePath, List<dom.Order> data)
+        {
+            string json = JsonConvert.SerializeObject(data);
+
+            // exceptions should be handled here, ignored for sake of time
+            await File.WriteAllTextAsync(jsonFilePath, json);
+
         }
 
         private static void Notes()
