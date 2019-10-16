@@ -96,6 +96,35 @@ namespace Domains.Library
             OrderTimestamp = datetime;
         }
 
+        /// <summary>
+        /// Adjust the quantity of a product in the basket.
+        /// </summary>
+        /// <param name="product">The product in the inventory</param>
+        /// <param name="quantity">The amount to add( or subtract) to the quantity.</param>
+        /// <returns>If product is found and adjustment to quantity is reasonable, true. Else, false.</returns>
+        public bool AdjustQuantity(Product product, int quantity)
+        {
+            foreach (KeyValuePair<Product, int> item in basket)
+            {
+                if (item.Key.ProductID == product.ProductID)
+                {
+                    if (item.Value + quantity >= 0)
+                    {
+                        basket[item.Key] = item.Value + quantity;
+                        return true;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Product found, but only {item.Value} in basket. You requested tried to decrease the quantity by {-1 * quantity}. Please try again.");
+                        return false;
+                    }
+                }
+            }
+            //when item is not found in inventory
+            Console.WriteLine("Product not found in this Location's inventory.");
+            return false;
+        }
+
         public decimal CalculateCostOfBasket()
         {
             decimal total = 0m;
@@ -106,6 +135,10 @@ namespace Domains.Library
             return Math.Round(total, 2);
         }
 
+        /// <summary>
+        /// Calculated the number of items in the basket.
+        /// </summary>
+        /// <returns>The number of items in the basket</returns>
         public int CalculateNumberOfItemsInBasket()
         {
             int result = 0;

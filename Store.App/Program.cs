@@ -56,6 +56,7 @@ namespace Store.App
                     string address = null;
 
                     Console.Clear();
+                    Console.WriteLine(storeName);
                     Console.WriteLine("Add a customer menu\n");
 
                     while (firstName == null)
@@ -109,6 +110,7 @@ namespace Store.App
                     while (true)
                     {
                         Console.Clear();
+                        Console.WriteLine(storeName);
                         Console.WriteLine("Search and Display Menu\n");
 
                         Console.WriteLine("1:\tSearch and Display Customers by Name");
@@ -127,6 +129,7 @@ namespace Store.App
                             string lastNameSearch = null;
 
                             Console.Clear();
+                            Console.WriteLine(storeName);
                             Console.WriteLine("Search and Display Customers by Name\n");
 
                             Console.WriteLine("Enter a First Name to search:");
@@ -155,6 +158,7 @@ namespace Store.App
                         else if (inputMenu2 == "2")
                         {
                             Console.Clear();
+                            Console.WriteLine(storeName);
                             Console.WriteLine("Locations:\n");
 
                             var locations = locContext.GetLocations().ToList();
@@ -173,6 +177,7 @@ namespace Store.App
                             do
                             {
                                 Console.Clear();
+                                Console.WriteLine(storeName);
                                 Console.WriteLine("Display All Orders for a Customer\n");
 
                                 Console.Write("Enter a Customer ID: ");
@@ -202,6 +207,7 @@ namespace Store.App
                             do
                             {
                                 Console.Clear();
+                                Console.WriteLine(storeName);
                                 Console.WriteLine("Display All Orders for a Location\n");
 
                                 Console.Write("Enter a Location ID: ");
@@ -232,6 +238,7 @@ namespace Store.App
                             do
                             {
                                 Console.Clear();
+                                Console.WriteLine(storeName);
                                 Console.WriteLine("Display Details of an Order:\n");
 
                                 Console.Write("Enter a Order ID: ");
@@ -272,6 +279,7 @@ namespace Store.App
                     do
                     {
                         Console.Clear();
+                        Console.WriteLine(storeName);
                         Console.WriteLine("Place an Order Menu\n");
 
                         Console.Write("Enter a Customer ID: ");
@@ -296,6 +304,7 @@ namespace Store.App
                     do
                     {
                         Console.Clear();
+                        Console.WriteLine(storeName);
                         Console.WriteLine("Place an Order Menu\n");
 
                         Console.WriteLine($"Enter a Customer ID: {custId}");
@@ -324,11 +333,11 @@ namespace Store.App
                     {
                         Console.Write("Would you like to continue? (YES/NO): ");
                         string answer = Console.ReadLine();
-                        if (answer.ToUpper() == "YES")
+                        if (answer.ToUpper() == "YES" || answer.ToUpper() == "Y")
                         {
                             break;
                         }
-                        else if (answer.ToUpper() == "NO")
+                        else if (answer.ToUpper() == "NO" || answer.ToUpper() == "N")
                         {
                             abort = true;
                         }
@@ -356,17 +365,22 @@ namespace Store.App
                                     prodId = 0;
 
                                     Console.Clear();
+                                    Console.WriteLine(storeName);
                                     Console.WriteLine("Place an Order Menu\n");
-                                    Console.WriteLine($"Customer:\n{cust.ToString()}");
+                                    /*Console.WriteLine($"Customer:\n{cust.ToString()}");
                                     Console.WriteLine($"Location:\n{loc.ToString()}");
-                                    Console.WriteLine();
-                                    Console.WriteLine("Location inventory:");
+                                    Console.WriteLine();*/
+                                    Console.WriteLine(".____________________.");
+                                    Console.WriteLine("| Location Inventory |");
+                                    Console.WriteLine("|____________________|");
                                     Console.WriteLine(loc.InventoryToString());
                                     Console.WriteLine();
-                                    Console.WriteLine("Your basket:");
+                                    Console.WriteLine("._____________.");
+                                    Console.WriteLine("| Your basket |");
+                                    Console.WriteLine("|_____________|");
                                     Console.WriteLine(ord.BasketToString());
 
-                                    Console.Write("Enter a Product Id, or DONE if finished: ");
+                                    Console.Write("\n\nEnter a Product Id, or DONE if finished: ");
                                     inputStr = Console.ReadLine();
                                     if (inputStr.ToUpper() == "DONE")
                                     {
@@ -396,22 +410,70 @@ namespace Store.App
                                     }
                                     else
                                     {
+                                        bool addRemoveTF = true;
+                                        do
+                                        {
+                                            Console.Write("Do you want to add or remove this Product to/from the basket? (ADD, REMOVE) ");
+                                            string addOrRemove = Console.ReadLine();
+                                            if(addOrRemove.ToUpper() == "ADD")
+                                            {
+                                                addRemoveTF = true;
+                                                break;
+                                            }
+                                            if(addOrRemove.ToUpper() == "REMOVE")
+                                            {
+                                                addRemoveTF = false;
+                                                break;
+                                            }
+                                        } 
+                                        while (true);
+
                                         bool isIntQuantity = false;
                                         int quantity = 0;
                                         do
                                         {
-                                            Console.Write("Enter a quanity: ");
+                                            Console.Write("Enter a quantity: ");
                                             inputStr = Console.ReadLine();
                                             isIntQuantity = Int32.TryParse(inputStr, out quantity);
 
                                         }
                                         while (!isIntQuantity);
-                                        if (loc.AdjustQuantity(prod, -1 * quantity))
+
+                                        if(addRemoveTF == true)
                                         {
-                                            ord.basket.Add(prod, quantity);
-                                            Console.WriteLine($"Added {quantity} {prod.ProductName}s to basket.");
-                                            Console.WriteLine("\nPress any key to continue.");
-                                            Console.ReadKey();
+                                            if (loc.AdjustQuantity(prod, -1 * quantity))
+                                            {
+                                                ord.basket.Add(prod, quantity);
+                                                Console.WriteLine($"Added {quantity} {prod.ProductName}s to basket.");
+                                                Console.WriteLine("\nPress any key to continue.");
+                                                Console.ReadKey();
+                                            }
+                                        }
+                                        else// if(addRemoveTF == false)
+                                        {
+                                            if (ord.AdjustQuantity(prod, -1 * quantity))
+                                            {
+                                                dom.Product prodInInv = null;
+                                                foreach(KeyValuePair<dom.Product,int> item in loc.inventory)
+                                                {
+                                                    if(item.Key.ProductID == prod.ProductID)
+                                                    {
+                                                        prodInInv = item.Key;
+                                                    }
+                                                }
+                                                if(prodInInv == null)
+                                                {
+                                                    Console.WriteLine("Something unexpected went wrong.");
+                                                }
+                                                else
+                                                {
+                                                    loc.inventory[prodInInv] += quantity;
+                                                    Console.WriteLine($"Removed {quantity} {prod.ProductName}s from basket.");
+                                                }
+                                                
+                                                Console.WriteLine("\nPress any key to continue.");
+                                                Console.ReadKey();
+                                            }
                                         }
                                     }
                                 }
@@ -420,7 +482,11 @@ namespace Store.App
                             ordContext.AddBasket(ord);
                             ordContext.Save();
 
+                            locContext.UpdateInventory(loc);
+                            locContext.Save();
+
                             Console.Clear();
+                            Console.WriteLine(storeName);
                             Console.WriteLine($"Order Complete.\n");
                             Console.WriteLine(ord.ToString());
                             Console.WriteLine(ord.BasketToString());

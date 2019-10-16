@@ -45,6 +45,23 @@ namespace DbLibrary.Library.Repositories
         }
 
         /// <summary>
+        /// Updates the Database Inventory with changes made to it's parallel Domain
+        /// </summary>
+        /// <param name="locDom">The domain Location with the inventory which will update the database</param>
+        public void UpdateInventory(dom.Location locDom)
+        {
+            Entities.Location currentEntity = _dbContext.Location
+                                                .Include(l => l.Inventory)
+                                                .FirstOrDefault(l => l.LocationId == locDom.StoreID);
+
+            foreach (Entities.Inventory item in currentEntity.Inventory)
+            {
+                item.Quantity = locDom.inventory.Where(i => i.Key.ProductID == item.ProductId).FirstOrDefault().Value;
+            }
+        }
+
+
+        /// <summary>
         /// Commits and saves changes to the Database
         /// </summary>
         public void Save()

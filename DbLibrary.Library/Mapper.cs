@@ -63,6 +63,36 @@ namespace DbLibrary.Library
             }
             return loc;
         }
+
+        /// <summary>
+        /// Maps a Domain Location to an entity Location
+        /// </summary>
+        /// <param name="locDom">A Domain Location</param>
+        /// <returns>An Entity Location</returns>
+        public static Entities.Location MapLocation(dom.Location locDom)
+        {
+            return new Entities.Location
+            {
+                LocationId = 0,
+                LocationName = locDom.StoreName,
+                LocationAddress = locDom.Address
+            };
+        }
+
+        /// <summary>
+        /// Maps an Domain Location's inventory to a List of Entity Inventories
+        /// </summary>
+        /// <param name="locDom">A Domain Location</param>
+        /// <returns>A List of Entity Inventories</returns>
+        public static IEnumerable<Entities.Inventory> MapInventory(dom.Location locDom)
+        {
+            var list = new List<Entities.Inventory> { };
+            foreach (KeyValuePair<dom.Product, int> item in locDom.inventory)
+            {
+                list.Add(new Entities.Inventory { ProductId = item.Key.ProductID, Quantity = item.Value, LocationId = locDom.StoreID });
+            }
+            return list;
+        }
         
         /// <summary>
         /// Maps an Entity Reciept and Basket into a Domain Order
