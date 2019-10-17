@@ -26,6 +26,7 @@ namespace Store.App
 
             //var serializers = new List<XmlSerializer> { custSerializer, prodSerializer, locSerializer, ordSerializer };
 
+            s_logger.Debug("Log\n----------");
             await RunUI(dbContext);
         }
 
